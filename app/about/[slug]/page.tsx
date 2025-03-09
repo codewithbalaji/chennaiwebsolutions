@@ -6,6 +6,8 @@ import { urlFor } from '@/sanity/lib/image'
 import { PortableText } from '@portabletext/react'
 import Link from 'next/link'
 import { PortableTextComponents } from '@portabletext/react'
+import { Metadata } from 'next'
+import { site } from '@/site'
 
 // Define custom components for the Portable Text renderer
 const ptComponents: PortableTextComponents = {
@@ -45,6 +47,58 @@ const ptComponents: PortableTextComponents = {
   }
 }
 
+type Props = {
+  params: { slug: string }
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  // Properly await the params object before accessing its properties
+  const { slug } = await params;
+  
+  const query = `
+    *[_type == 'author' && slug.current == $slug][0] {
+      _id,
+      name,
+      image,
+      "bio": content[0].children[0].text
+    }
+  `
+
+  const author = await client.fetch(query, { slug })
+  
+  if (!author) {
+    return {
+      title: 'Author Not Found',
+      description: 'The requested author profile could not be found'
+    }
+  }
+
+  const title = `${author.name} - Author Profile | ${site.name}`
+  const description = author.bio || `Read articles and learn more about ${author.name}`
+
+  return {
+    applicationName: site.name,
+    creator: site.name,
+    metadataBase: new URL(site.url),
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images: author.image ? urlFor(author.image).url() : '/images/default-author.jpg',
+      type: 'profile',
+      locale: 'en_IN',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: author.image ? urlFor(author.image).url() : '/images/default-author.jpg',
+    },
+    authors: [{ name: author.name }]
+  }
+}
+
 async function getAuthor(slug: string) {
   const query = `
     *[ _type == 'author' && slug.current == $slug ][0] {
@@ -77,8 +131,9 @@ function formatDate(dateString: string) {
   return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
 }
 
-export default async function AboutPage({ params }) {
-  const { slug } = params
+export default async function AboutPage({ params }: { params: { slug: string } }) {
+  // Properly await the params object before accessing its properties
+  const { slug } = await params;
   const author = await getAuthor(slug)
   
   if (!author) {

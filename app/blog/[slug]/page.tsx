@@ -14,7 +14,9 @@ type Props = {
     searchParams: { [key: string]: string | string[] | undefined };
   };
   
-  export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
+  export async function generateMetadata({ params }: Props): Promise<Metadata> {
+    const { slug } = await params;
+    
     const query = `
       *[_type == 'post' && slug.current == $slug] {
         _id,
@@ -23,8 +25,11 @@ type Props = {
         image
       }[0]
     `;
+
+    const data = await client.fetch(query, { slug });
   
-    const data = await client.fetch(query, { slug: params.slug });
+
+
   
     return {
       applicationName: site.name,
@@ -160,14 +165,9 @@ async function getRelatedPosts(currentPostId: string) {
     return await client.fetch(query, { currentPostId });
 }
 
-export default async function BlogPostPage({ 
-    params 
-}: { 
-    params: { slug: string } 
-}) {
-    const { slug } = await params
-    const post = await getPost(slug)
-    
+export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+    const { slug } = await params;
+    const post = await getPost(slug);
     
     if (!post) {
         return (
