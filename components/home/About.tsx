@@ -6,7 +6,23 @@ import Link from "next/link"
 
 export function About() {
   return (
-    <section className="relative w-full py-12 md:py-16 overflow-hidden ">
+    <section className="relative w-full py-12 md:py-16 overflow-hidden">
+      {/* Dotted background pattern */}
+      <div className="absolute inset-0 w-full h-full">
+        <div className="absolute inset-0 opacity-20 dark:opacity-10">
+          {Array.from({ length: 20 }).map((_, rowIndex) => (
+            <div key={`row-${rowIndex}`} className="flex justify-around">
+              {Array.from({ length: 30 }).map((_, colIndex) => (
+                <div 
+                  key={`dot-${rowIndex}-${colIndex}`} 
+                  className="w-1 h-1 rounded-full bg-gray-400 dark:bg-white m-6"
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+      
       <div className="relative z-20 w-full max-w-7xl mx-auto px-6 md:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Text content on the left */}
@@ -17,14 +33,14 @@ export function About() {
             transition={{ duration: 0.6, ease: [0.4, 0.0, 0.2, 1] }}
           >
             <motion.h3
-              className="text-2xl md:text-3xl lg:text-4xl font-bold font-calendas leading-tight mb-6 text-white"
+              className="text-2xl md:text-3xl lg:text-4xl font-bold font-calendas leading-tight mb-6 text-gray-900 dark:text-white"
             >
               Transforming ideas into 
-              <Highlight className=" ml-2">digital excellence</Highlight>
+              <Highlight className="ml-2">digital excellence</Highlight>
             </motion.h3>
 
             <motion.p
-              className="text-base md:text-lg lg:text-xl font-overusedGrotesk mb-8 text-white"
+              className="text-base md:text-lg lg:text-xl font-overusedGrotesk mb-8 text-gray-700 dark:text-white"
             >
               We combine cutting-edge technologies with creative design to build websites and applications 
               that elevate your business in the digital landscape. Our solutions are tailored to your unique needs,
@@ -40,7 +56,7 @@ export function About() {
             >
               <Link href="/services">
                 <motion.button
-                  className="text-base md:text-lg font-semibold tracking-tight text-[#001324] bg-white px-5 py-2.5 md:px-6 md:py-3 rounded-full shadow-lg font-calendas"
+                  className="text-base md:text-lg font-semibold tracking-tight text-white bg-gray-900 dark:bg-white dark:text-[#001324] px-5 py-2.5 md:px-6 md:py-3 rounded-full shadow-lg font-calendas"
                   whileHover={{
                     scale: 1.05,
                     transition: { type: "spring", damping: 30, stiffness: 400 },

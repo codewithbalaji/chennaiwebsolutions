@@ -124,3 +124,18 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom animations */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-100% - var(--gap, 1rem))); }
+}
+
+.animate-marquee {
+  animation: marquee var(--duration, 40s) linear infinite;
+}
+
+/* Container styles */
+.max-w-container {
+  max-width: 1280px;
+}

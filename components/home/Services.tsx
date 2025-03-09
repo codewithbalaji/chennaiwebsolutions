@@ -2,6 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { BackgroundGradient } from "@/components/ui/background-gradient";
+import { GradientHeading } from "@/components/ui/gradient-heading";
 import Link from "next/link";
 
 // Service card data
@@ -134,9 +135,9 @@ export function Services() {
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-calendas tracking-tight">
+          <GradientHeading variant="default" size="xxl" weight="bold">
             Our <span className="text-blue-600">Services</span>
-          </h2>
+          </GradientHeading>
           <p className="mt-4 text-lg text-neutral-600 dark:text-neutral-400 font-overusedGrotesk max-w-3xl mx-auto">
             Comprehensive digital solutions to help your business thrive in the online world
           </p>
