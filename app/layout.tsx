@@ -3,6 +3,15 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { geistSans, geistMono } from '@/lib/fonts'
 import type { Metadata } from 'next'
 import './globals.css'
+import { Poppins } from 'next/font/google'
+
+// Load Poppins font with specific weights
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-poppins',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: 'Chennai Web Solutions',
@@ -16,7 +25,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased font-poppins`}>
         <ThemeProvider>
           <main className="container mx-auto">
             <Header />
