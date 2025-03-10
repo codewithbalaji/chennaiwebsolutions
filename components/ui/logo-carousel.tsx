@@ -5,7 +5,6 @@ import React, {
   useEffect,
   useMemo,
   useState,
-  type SVGProps,
 } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 
@@ -141,4 +140,6 @@ export function LogoCarousel({ columnCount = 2, logos }: LogoCarouselProps) {
   )
 }
 
+LogoCarousel.displayName = 'LogoCarousel';
 export { LogoColumn };
+

@@ -141,7 +141,7 @@ export default async function AboutPage({ params }: { params: { slug: string } }
       <div className="flex justify-center items-center h-screen">
         <div className="text-center">
           <h1 className="text-2xl font-bold">Profile not found</h1>
-          <p className="mt-2">The profile you're looking for doesn't exist or has been removed.</p>
+          <p className="mt-2">The profile you&apos;re looking for doesn&apos;t exist or has been removed.</p>
         </div>
       </div>
     )
@@ -185,7 +185,7 @@ export default async function AboutPage({ params }: { params: { slug: string } }
             <h2 className="text-2xl font-bold mb-8">Articles by {author.name}</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {authorPosts.map((post) => (
+              {authorPosts.map((post: any) => (
                 <Link 
                   key={post._id} 
                   href={`/blog/${post.slug.current}`}

@@ -70,8 +70,8 @@ const exampleImages = [
 
 function LandingHero() {
   return (
-    <section className="w-full min-h-[100vh] overflow-hidden md:overflow-visible flex flex-col items-center justify-center relative py-16 md:py-0">
-      <Floating sensitivity={-0.5} className="h-full">
+    <section className="w-full min-h-[100vh] overflow-hidden  flex flex-col items-center justify-center relative py-8 md:py-0">
+      <Floating sensitivity={-0.5} className="h-full w-full">
         <FloatingElement
           depth={0.5}
           className="top-[15%] left-[2%] md:top-[25%] md:left-[5%]"
@@ -143,9 +143,9 @@ function LandingHero() {
         </FloatingElement>
       </Floating>
 
-      <div className="flex flex-col justify-center items-center w-[90%] sm:w-[85%] md:w-[80%] lg:w-[70%] z-50 pointer-events-auto">
+      <div className="flex flex-col justify-center items-center w-[90%] sm:w-[85%] md:w-[80%] z-50 pointer-events-auto">
         <motion.h1
-          className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl text-center w-full justify-center items-center flex-col flex leading-tight font-calendas tracking-tight space-y-3 md:space-y-4"
+          className="text-3xl sm:text-4xl md:text-7xl text-center w-full justify-center items-center flex-col flex leading-tight font-calendas tracking-tight space-y-2 md:space-y-3"
           animate={{ opacity: 1, y: 0 }}
           initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.2, ease: "easeOut", delay: 0.3 }}
@@ -162,8 +162,10 @@ function LandingHero() {
                   <TextRotate
                 texts={[
                   "Online Presence",
-                  "Global Reach",
-                  "Digital Transformation",
+                  "Web Development",
+                  "Mobile Development",
+                  "Digital Marketing",
+                  
                 ]}
                 mainClassName="overflow-hidden text-[#4361ee] py-0 pb-2 md:pb-4 rounded-xl mt-2 sm:mt-0"
                 staggerDuration={0.03}
@@ -177,7 +179,7 @@ function LandingHero() {
           </LayoutGroup>
         </motion.h1>
         <motion.p
-          className="text-base sm:text-lg md:text-xl lg:text-2xl text-center font-poppins pt-6 sm:pt-8 md:pt-10 lg:pt-12 px-4"
+          className="text-base sm:text-lg md:text-2xl text-center font-poppins pt-4 sm:pt-6 md:pt-8 px-4"
           animate={{ opacity: 1, y: 0 }}
           initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.2, ease: "easeOut", delay: 0.5 }}
@@ -185,9 +187,9 @@ function LandingHero() {
           We empower businesses with cutting-edge web & app solutions, turning ideas into a strong digital presence.
         </motion.p>
 
-        <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 items-center mt-10 sm:mt-12 md:mt-16 lg:mt-20 w-full px-6 sm:px-0">
+        <div className="flex flex-col sm:flex-row justify-center space-y-3 sm:space-y-0 sm:space-x-4 items-center mt-6 sm:mt-8 md:mt-12 w-full px-6 sm:px-0">
           <motion.button
-            className="w-full sm:w-auto text-lg md:text-xl lg:text-2xl font-semibold tracking-tight text-background bg-foreground px-6 py-4 sm:px-6 sm:py-3 md:px-8 md:py-4 lg:px-10 lg:py-5 rounded-full z-20 shadow-2xl font-poppins"
+            className="w-full sm:w-auto text-base md:text-xl font-semibold tracking-tight text-background bg-foreground px-5 py-3 sm:px-6 sm:py-3 md:px-8 md:py-4 rounded-full z-20 shadow-2xl font-poppins"
             animate={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: 20 }}
             transition={{
@@ -206,7 +208,7 @@ function LandingHero() {
             </Link>
           </motion.button>
           <motion.button
-            className="w-full sm:w-auto text-lg md:text-xl lg:text-2xl font-semibold tracking-tight text-white bg-[#4361ee] px-6 py-4 sm:px-6 sm:py-3 md:px-8 md:py-4 lg:px-10 lg:py-5 rounded-full z-20 shadow-2xl font-poppins"
+            className="w-full sm:w-auto text-base md:text-xl font-semibold tracking-tight text-white bg-[#4361ee] px-5 py-3 sm:px-6 sm:py-3 md:px-8 md:py-4 rounded-full z-20 shadow-2xl font-poppins"
             animate={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: 20 }}
             transition={{
@@ -220,7 +222,7 @@ function LandingHero() {
               transition: { type: "spring", damping: 30, stiffness: 400 },
             }}
           >
-            <Link href="/contact" className="w-full block">Let's Talk</Link>
+            <Link href="/contact" className="w-full block">Let&apos;s Talk</Link>
           </motion.button>
         </div>
       </div>
