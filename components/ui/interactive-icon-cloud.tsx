@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react"
 import { useTheme } from "next-themes"
 import { Cloud, fetchSimpleIcons, type ICloud, renderSimpleIcon, type SimpleIcon } from "react-icon-cloud"
+import dynamic from "next/dynamic"
 
 export const cloudProps: Omit<ICloud, "children"> = {
   containerProps: {
@@ -46,7 +47,7 @@ export const renderCustomIcon = (icon: SimpleIcon, theme: string) => {
       href: undefined,
       target: undefined,
       rel: undefined,
-      onClick: (e: any) => e.preventDefault(),
+      onClick: (e: React.MouseEvent) => e.preventDefault(),
     },
   })
 }
@@ -57,7 +58,7 @@ export type DynamicCloudProps = {
 
 type IconData = Awaited<ReturnType<typeof fetchSimpleIcons>>
 
-export function IconCloud({ iconSlugs }: DynamicCloudProps) {
+function IconCloudComponent({ iconSlugs }: DynamicCloudProps) {
   const [data, setData] = useState<IconData | null>(null)
   const { theme } = useTheme()
 
@@ -72,10 +73,15 @@ export function IconCloud({ iconSlugs }: DynamicCloudProps) {
   }, [data, theme])
 
   return (
-    // @ts-ignore 
+    // @ts-expect-error Cloud component from react-icon-cloud has incomplete types
     <Cloud {...cloudProps} >
       <>{renderedIcons}</>
     </Cloud>
   )
 }
+
+// Export a client-only version of the component to prevent hydration errors
+export const IconCloud = dynamic(() => Promise.resolve(IconCloudComponent), { 
+  ssr: false 
+})
 

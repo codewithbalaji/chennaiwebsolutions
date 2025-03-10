@@ -2,6 +2,7 @@ import { LandingHero } from '@/components/home/LandingHero'
 import { About } from '@/components/home/About'
 import { Services } from '@/components/home/Services'
 import { Clients } from '@/components/home/Clients'
+import Projects from '@/components/home/Projects'
 import Footer from '@/components/shared/footer'
 import React from 'react'
 import { Testimonials } from '@/components/home/Testimonials'
@@ -13,7 +14,7 @@ const Home = () => {
         <Clients/>
         <About/>
         <Services/>
-      
+        <Projects/>
         <Testimonials/>
         <Footer/>
     </div>

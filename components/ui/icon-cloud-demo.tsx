@@ -1,5 +1,6 @@
+"use client"
 import { IconCloud } from "./interactive-icon-cloud"
-
+import { Suspense } from "react"
 
 const slugs = [
   "typescript",
@@ -37,7 +38,9 @@ const slugs = [
 export function IconCloudDemo() {
   return (
     <div className="relative flex size-full max-w-lg items-center justify-center overflow-hidden rounded-lg bg-transparent px-4 py-8 md:px-20 md:pb-20 md:pt-8">
-      <IconCloud iconSlugs={slugs} />
+      <Suspense fallback={<div className="h-[300px] w-full flex items-center justify-center">Loading icons...</div>}>
+        <IconCloud iconSlugs={slugs} />
+      </Suspense>
     </div>
   )
 }
