@@ -140,7 +140,7 @@ export default function GetStarted() {
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-6">Start Your Digital Journey Today</h2>
           <p className="text-white/80 max-w-2xl mx-auto mb-8 text-lg">
-            Let's discuss how we can help your business grow with our custom web and app development solutions.
+            Let&apos;s discuss how we can help your business grow with our custom web and app development solutions.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/contact">

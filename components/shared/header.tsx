@@ -37,7 +37,7 @@ export function Header() {
     <div className="relative w-full py-4 px-6 flex items-center border-b border-gray-200 dark:border-gray-800">
       {/* Logo on left */}
       <div className="flex items-center">
-        <Image src={logo} alt="logo" width={50} height={50} />
+        <Image src={logo} alt="logo" width={50} height={50}  />
         <h1 className="text-xl font-bold">Chennai Web Solutions</h1>
       </div>
       
@@ -61,7 +61,7 @@ export function Header() {
       <div className="ml-auto flex items-center gap-4">
         {/* Contact button - hidden on mobile */}
         <Link href="/contact" className="hidden md:block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors">
-          Let's Talk
+          Let&apos;s Talk
         </Link>
         
         {/* Theme toggle */}
@@ -125,7 +125,7 @@ export function Header() {
                 className="block px-4 py-2 text-sm text-blue-600 hover:bg-gray-100 dark:hover:bg-gray-800"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Let's Talk
+                Let&apos;s Talk
               </Link>
             </div>
           )}

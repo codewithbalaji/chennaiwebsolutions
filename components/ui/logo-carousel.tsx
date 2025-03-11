@@ -102,6 +102,7 @@ const LogoColumn: React.FC<LogoColumnProps> = React.memo(
     )
   }
 )
+LogoColumn.displayName = 'LogoColumn';
 
 interface LogoCarouselProps {
   columnCount?: number
@@ -141,5 +142,4 @@ export function LogoCarousel({ columnCount = 2, logos }: LogoCarouselProps) {
 }
 
 LogoCarousel.displayName = 'LogoCarousel';
-export { LogoColumn };
 

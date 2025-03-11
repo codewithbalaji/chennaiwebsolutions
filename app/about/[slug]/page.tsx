@@ -8,6 +8,8 @@ import Link from 'next/link'
 import { PortableTextComponents } from '@portabletext/react'
 import { Metadata } from 'next'
 import { site } from '@/site'
+import { Post } from '@/@types'
+
 
 // Define custom components for the Portable Text renderer
 const ptComponents: PortableTextComponents = {
@@ -48,8 +50,11 @@ const ptComponents: PortableTextComponents = {
 }
 
 type Props = {
-  params: { slug: string }
+  params: {
+    slug: string
+  }
 }
+
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // Properly await the params object before accessing its properties
@@ -131,6 +136,7 @@ function formatDate(dateString: string) {
   return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`
 }
 
+//@ts-expect-error some error
 export default async function AboutPage({ params }: { params: { slug: string } }) {
   // Properly await the params object before accessing its properties
   const { slug } = await params;
@@ -185,7 +191,7 @@ export default async function AboutPage({ params }: { params: { slug: string } }
             <h2 className="text-2xl font-bold mb-8">Articles by {author.name}</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {authorPosts.map((post: any) => (
+              {authorPosts.map((post: Post) => (
                 <Link 
                   key={post._id} 
                   href={`/blog/${post.slug.current}`}
@@ -203,7 +209,7 @@ export default async function AboutPage({ params }: { params: { slug: string } }
                     <div className="space-y-2">
                       <div className="flex items-center space-x-2">
                         <span className="px-2 py-1 text-xs bg-gray-100 text-black rounded-full">Blog</span>
-                        <span className="text-xs text-muted-foreground">{formatDate(post._createdAt)}</span>
+                        <span className="text-xs text-muted-foreground">{formatDate(post._createdAt.toString())}</span>
                       </div>
                       <h3 className="text-lg font-semibold group-hover:text-primary transition-colors">
                         {post.title}

@@ -3,8 +3,19 @@
 import { useRef } from "react"
 import { motion } from "framer-motion"
 import { GradientHeading } from "@/components/ui/gradient-heading"
+import Image from "next/image"
 
-const testimonials = [
+type Testimonial = {
+  author: {
+    name: string
+    role: string
+    company: string
+    avatar: string
+  }
+  text: string
+}
+
+const testimonials: Testimonial[] = [
   {
     author: {
       name: "Emma Thompson",
@@ -61,7 +72,7 @@ const testimonials = [
   }
 ]
 
-const TestimonialCard = ({ testimonial }) => {
+const TestimonialCard = ({ testimonial }: { testimonial: Testimonial }) => {
   return (
     <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl shadow-md flex flex-col h-full min-w-[300px] max-w-[350px]">
       <div className="mb-4">
@@ -71,9 +82,11 @@ const TestimonialCard = ({ testimonial }) => {
       </div>
       <p className="text-neutral-700 dark:text-neutral-300 flex-grow mb-6">{testimonial.text}</p>
       <div className="flex items-center mt-auto">
-        <img 
+        <Image 
           src={testimonial.author.avatar} 
           alt={testimonial.author.name} 
+          width={48}
+          height={48}
           className="w-12 h-12 rounded-full mr-4 object-cover"
         />
         <div>

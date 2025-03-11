@@ -45,7 +45,9 @@ const Floating = ({
       }
     >()
   )
-  const mousePositionRef = useMousePositionRef(containerRef)
+
+const mousePositionRef = useMousePositionRef(containerRef as React.RefObject<HTMLElement>)
+
 
   const registerElement = useCallback(
     (id: string, element: HTMLDivElement, depth: number) => {
@@ -118,10 +120,14 @@ export const FloatingElement = ({
     if (!elementRef.current || !context) return
 
     const nonNullDepth = depth ?? 0.01
+    const currentId = idRef.current
 
-    context.registerElement(idRef.current, elementRef.current, nonNullDepth)
-    return () => context.unregisterElement(idRef.current)
-  }, [depth])
+    context.registerElement(currentId, elementRef.current, nonNullDepth)
+    
+    return () => {
+      context.unregisterElement(currentId)
+    }
+  }, [depth, context])
 
   return (
     <div

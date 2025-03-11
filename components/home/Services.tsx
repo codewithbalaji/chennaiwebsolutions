@@ -1,10 +1,17 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { BackgroundGradient } from "@/components/ui/background-gradient";
 import { GradientHeading } from "@/components/ui/gradient-heading";
 import Link from "next/link";
-import Image from "next/image";
+
+type Service = {
+  title: string
+  description: string
+  icon: string
+  color: string
+  iconBg: string
+}
+
 
 // Service card data based on the provided image
 const services = [
@@ -84,7 +91,7 @@ const cardVariants = {
   }
 };
 
-const ServiceCard = ({ service }) => {
+const ServiceCard = ({ service }: { service: Service }) => {
   return (
     <motion.div
       variants={cardVariants}
