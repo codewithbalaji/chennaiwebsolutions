@@ -123,7 +123,7 @@ export default function Blog() {
           variants={fadeInVariants}
         >
           <p className="text-sm font-medium text-muted-foreground">BLOG</p>
-          <h1 className="text-4xl font-bold text-primary">Zingbizz Insights</h1>
+          <h1 className="text-4xl font-bold text-primary">Recent Blogs</h1>
         </motion.div>
 
         {/* Featured Post - Horizontal Layout */}
