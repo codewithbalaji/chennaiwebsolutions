@@ -7,11 +7,12 @@ import React, {
   useState,
 } from "react"
 import { AnimatePresence, motion } from "framer-motion"
+import Image from "next/image"
 
 interface Logo {
   name: string
   id: number
-  img: React.ComponentType<React.SVGProps<SVGSVGElement>>
+  img: string
 }
 
 interface LogoColumnProps {
@@ -53,7 +54,7 @@ const LogoColumn: React.FC<LogoColumnProps> = React.memo(
     const columnDelay = index * 200
     const adjustedTime = (currentTime + columnDelay) % (cycleInterval * logos.length)
     const currentIndex = Math.floor(adjustedTime / cycleInterval)
-    const CurrentLogo = useMemo(() => logos[currentIndex].img, [logos, currentIndex])
+    const currentLogo = useMemo(() => logos[currentIndex], [logos, currentIndex])
 
     return (
       <motion.div
@@ -68,9 +69,9 @@ const LogoColumn: React.FC<LogoColumnProps> = React.memo(
       >
         <AnimatePresence mode="wait">
           <motion.div
-            key={`${logos[currentIndex].id}-${currentIndex}`}
+            key={`${currentLogo.id}-${currentIndex}`}
             className="absolute inset-0 flex items-center justify-center"
-            initial={{ y: "10%", opacity: 0, filter: "blur(8px)" }}
+            initial={{ y: "10%", opacity: 0 }}
             animate={{
               y: "0%",
               opacity: 1,
@@ -87,7 +88,7 @@ const LogoColumn: React.FC<LogoColumnProps> = React.memo(
             exit={{
               y: "-20%",
               opacity: 0,
-              filter: "blur(6px)",
+              filter: "blur(4px)",
               transition: {
                 type: "tween",
                 ease: "easeIn",
@@ -95,7 +96,13 @@ const LogoColumn: React.FC<LogoColumnProps> = React.memo(
               },
             }}
           >
-            <CurrentLogo className="h-20 w-20 max-h-[80%] max-w-[80%] object-contain md:h-32 md:w-32" />
+            <Image 
+              src={currentLogo.img}
+              alt={currentLogo.name}
+              width={128}
+              height={128}
+              className="h-20 w-20 max-h-[80%] max-w-[80%] object-contain md:h-32 md:w-32"
+            />
           </motion.div>
         </AnimatePresence>
       </motion.div>

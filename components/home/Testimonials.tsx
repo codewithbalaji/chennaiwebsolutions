@@ -126,14 +126,18 @@ export function Testimonials() {
           {/* First row - left to right */}
           <div 
             ref={marqueeRef1}
-            className="flex gap-6 mb-6 marquee-container"
+            className="flex gap-6 mb-6"
           >
             <div className="flex gap-6 animate-marquee">
               {testimonials.slice(0, 3).map((testimonial, index) => (
-                <TestimonialCard key={index} testimonial={testimonial} />
+                <div key={index} className="shrink-0">
+                  <TestimonialCard testimonial={testimonial} />
+                </div>
               ))}
               {testimonials.slice(0, 3).map((testimonial, index) => (
-                <TestimonialCard key={`clone-${index}`} testimonial={testimonial} />
+                <div key={`clone-${index}`} className="shrink-0">
+                  <TestimonialCard testimonial={testimonial} />
+                </div>
               ))}
             </div>
           </div>
@@ -141,14 +145,18 @@ export function Testimonials() {
           {/* Second row - right to left */}
           <div 
             ref={marqueeRef2}
-            className="flex gap-6 marquee-container"
+            className="flex gap-6"
           >
             <div className="flex gap-6 animate-marquee-reverse">
               {testimonials.slice(3, 6).map((testimonial, index) => (
-                <TestimonialCard key={index} testimonial={testimonial} />
+                <div key={index} className="shrink-0">
+                  <TestimonialCard testimonial={testimonial} />
+                </div>
               ))}
               {testimonials.slice(3, 6).map((testimonial, index) => (
-                <TestimonialCard key={`clone-${index}`} testimonial={testimonial} />
+                <div key={`clone-${index}`} className="shrink-0">
+                  <TestimonialCard testimonial={testimonial} />
+                </div>
               ))}
             </div>
           </div>
