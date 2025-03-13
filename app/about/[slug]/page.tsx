@@ -7,7 +7,7 @@ import { PortableText } from '@portabletext/react'
 import Link from 'next/link'
 import { PortableTextComponents } from '@portabletext/react'
 import { Metadata } from 'next'
-import { site } from '@/site'
+import { site } from '@/app/site'
 import { Post } from '@/@types'
 
 

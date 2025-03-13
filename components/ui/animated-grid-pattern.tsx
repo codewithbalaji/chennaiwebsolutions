@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -32,23 +32,27 @@ export function AnimatedGridPattern({
   const id = useId();
   const containerRef = useRef<SVGSVGElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-  const [squares, setSquares] = useState(() => generateSquares(numSquares));
-
-  function getPos() {
+  
+  // Memoize the getPos function with useCallback
+  const getPos = useCallback(() => {
+    if (!dimensions.width || !dimensions.height) return [0, 0];
     return [
       Math.floor((Math.random() * dimensions.width) / width),
       Math.floor((Math.random() * dimensions.height) / height),
     ];
-  }
+  }, [dimensions.width, dimensions.height, width, height]);
 
-  function generateSquares(count: number) {
+  // Memoize the generateSquares function with useCallback
+  const generateSquares = useCallback((count: number) => {
     return Array.from({ length: count }, (_, i) => ({
       id: i,
       pos: getPos(),
     }));
-  }
+  }, [getPos]);
 
-  const updateSquarePosition = (id: number) => {
+  const [squares, setSquares] = useState<Array<{ id: number; pos: number[] }>>([]);
+
+  const updateSquarePosition = useCallback((id: number) => {
     setSquares((currentSquares) =>
       currentSquares.map((sq) =>
         sq.id === id
@@ -59,34 +63,40 @@ export function AnimatedGridPattern({
           : sq,
       ),
     );
-  };
+  }, [getPos]);
 
+  // Initialize squares when dimensions change
   useEffect(() => {
     if (dimensions.width && dimensions.height) {
       setSquares(generateSquares(numSquares));
     }
-  }, [dimensions, numSquares, generateSquares]);
+  }, [dimensions.width, dimensions.height, numSquares, generateSquares]);
 
+  // Set up resize observer
   useEffect(() => {
     const currentRef = containerRef.current;
+    if (!currentRef) return;
+    
     const resizeObserver = new ResizeObserver((entries) => {
       const entry = entries[0];
       if (entry) {
-        setDimensions({
-          width: entry.contentRect.width,
-          height: entry.contentRect.height,
-        });
+        const newWidth = entry.contentRect.width;
+        const newHeight = entry.contentRect.height;
+        
+        // Only update if dimensions actually changed
+        if (newWidth !== dimensions.width || newHeight !== dimensions.height) {
+          setDimensions({
+            width: newWidth,
+            height: newHeight,
+          });
+        }
       }
     });
 
-    if (currentRef) {
-      resizeObserver.observe(currentRef);
-    }
+    resizeObserver.observe(currentRef);
 
     return () => {
-      if (currentRef) {
-        resizeObserver.unobserve(currentRef);
-      }
+      resizeObserver.unobserve(currentRef);
     };
   }, []);
 

@@ -17,14 +17,14 @@ type Service = {
 const services = [
   {
     title: "WEBSITE DESIGN",
-    description: "Techpark info solutions design/redesign your website in a cost efficient manner and according to the trend",
+    description: "Chennai web solutions design/redesign your website in a cost efficient manner and according to the trend",
     icon: "/icons/website-design.svg",
     color: "from-red-400 to-red-500",
     iconBg: "bg-red-100"
   },
   {
     title: "WEBSITE DEVELOPMENT",
-    description: "Tech Park Developers are skilled and experience in using the latest website building technologies to give out the best performing site",
+    description: "Chennai web Developers are skilled and experience in using the latest website building technologies to give out the best performing site",
     icon: "/icons/website-development.svg",
     color: "from-blue-400 to-blue-500",
     iconBg: "bg-blue-100"
@@ -91,7 +91,14 @@ const cardVariants = {
   }
 };
 
+// Helper function to generate slug from title
+const generateSlug = (title: string): string => {
+  return title.toLowerCase().replace(/\s+/g, '-');
+};
+
 const ServiceCard = ({ service }: { service: Service }) => {
+  const slug = generateSlug(service.title);
+  
   return (
     <motion.div
       variants={cardVariants}
@@ -164,7 +171,7 @@ const ServiceCard = ({ service }: { service: Service }) => {
         </p>
         
         <div className="mt-6 flex justify-center">
-          <Link href="/contact">
+          <Link href={`/services/${slug}`}>
             <motion.button 
               className={`rounded-full px-4 py-2 text-white flex items-center space-x-1 ${
                 service.title.includes("WEBSITE DESIGN") || service.title.includes("SEO") || service.title.includes("DIGITAL MARKETING") 
@@ -174,7 +181,7 @@ const ServiceCard = ({ service }: { service: Service }) => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
             >
-              <span>Get Started</span>
+              <span>Learn More</span>
               <span className="ml-1">→</span>
             </motion.button>
           </Link>

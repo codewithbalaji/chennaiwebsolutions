@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useTheme } from "next-themes";
 import {  Menu as MenuIcon, Moon, Sun} from "lucide-react";
 import Link from "next/link";
-import logo from "@/public/logo.png";
+import logo from "@/public/CWS Bullet Blue.svg";
 import useInvalidPaths from "@/lib/use-invalid-paths";
 
 export function Header() {
@@ -38,13 +38,16 @@ export function Header() {
       {/* Logo on left */}
       <div className="flex items-center">
         <Image src={logo} alt="logo" width={50} height={50}  />
-        <h1 className="text-xl font-bold">Chennai Web Solutions</h1>
+        <h1 className="text-lg font-bold">Chennai Web Solutions</h1>
       </div>
       
       {/* Navigation centered - hidden on mobile */}
       <div className="hidden md:flex flex-1 justify-center space-x-8">
         <Link href="/" className="font-medium hover:text-blue-600 transition-colors">
           Home
+        </Link>
+        <Link href="/services" className="font-medium hover:text-blue-600 transition-colors">
+          Services
         </Link>
         <Link href="/works" className="font-medium hover:text-blue-600 transition-colors">
           Works

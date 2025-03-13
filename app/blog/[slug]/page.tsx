@@ -7,7 +7,7 @@ import { PortableText } from '@portabletext/react';
 import { PortableTextComponents } from '@portabletext/react';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { site } from '@/site';
+import { site } from '@/app/site';
 
 type Props = {
     params: { slug: string };

@@ -16,7 +16,7 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: 'Chennai Web Solutions',
-  description: 'Web development and design services',
+  description: 'Web development and design services in Chennai, India',
 }
 
 export default function RootLayout({
