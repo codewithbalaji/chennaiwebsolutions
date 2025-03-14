@@ -40,7 +40,9 @@ async function getProject(slug: string) {
 }
 
 export default async function ProjectPage({ params }: Props) {
-  const project = await getProject(params.slug)
+  // Await params before accessing slug
+  const { slug } = await params
+  const project = await getProject(slug)
 
   if (!project) {
     notFound()

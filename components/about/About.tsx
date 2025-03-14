@@ -11,9 +11,21 @@ import { useState, useRef, useEffect } from 'react';
 const teamMembers = [
   { 
     name: "Balaji D", 
-    role: "CEO & CTO", 
+    role: "Founder", 
     image: "https://res.cloudinary.com/dryhpaq1t/image/upload/v1741943851/balajid_bmu3km.jpg",
     slug: "balaji-d"
+  },
+  { 
+    name: "Santhosh D", 
+    role: "Web & AI Specialist", 
+    image: "https://res.cloudinary.com/dryhpaq1t/image/upload/v1741963174/Santhosh_D_rz3vr0.jpg",
+    slug: "santhosh-d"
+  },  
+  { 
+    name: "Deepan B", 
+    role: "AI Consultant", 
+    image: "https://res.cloudinary.com/dryhpaq1t/image/upload/v1741943850/deepanb_wyj4j2.jpg",
+    slug: "deepan-b"
   },
   { 
     name: "Joshua Vince", 
@@ -22,18 +34,12 @@ const teamMembers = [
     slug: "joshua-vince"
   },
   { 
-    name: "Deepan B", 
-    role: "AI Consultant", 
-    image: "https://res.cloudinary.com/dryhpaq1t/image/upload/v1741943850/deepanb_wyj4j2.jpg",
-    slug: "deepan-b"
-  },
-  { 
     name: "Yogeshwaran B", 
-    role: "Social Media Manager", 
-    image: "https://res.cloudinary.com/dryhpaq1t/image/upload/v1741943850/yogesh_w4ymxh.jpg",
+    role: "Social Media Strategist", 
+    image: "https://res.cloudinary.com/dryhpaq1t/image/upload/v1741962791/yogeshwaranhd.jpeg_loh6ua.jpg",
     slug: "yogeshwaran-b"
   },
-//   { name: "Santhosh D", role: "Web Developer & Strategist", image: "santhosh.jpg" },
+ 
 ];
 
 const useCounter = (end: number, duration: number = 2000) => {
@@ -293,8 +299,8 @@ export default function About() {
                       <Image
                         src={member.image}
                         alt={member.name}
-                        fill
-                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        fill 
+                        className="transition-transform duration-300 group-hover:scale-105"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>

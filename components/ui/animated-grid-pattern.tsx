@@ -27,7 +27,7 @@ export function AnimatedGridPattern({
   className,
   maxOpacity = 0.5,
   duration = 4,
-  ...props
+  repeatDelay = 0,
 }: AnimatedGridPatternProps) {
   const id = useId();
   const containerRef = useRef<SVGSVGElement>(null);
@@ -108,7 +108,6 @@ export function AnimatedGridPattern({
         "pointer-events-none absolute inset-0 h-full w-full fill-gray-400/30 stroke-gray-400/30",
         className,
       )}
-      {...props}
     >
       <defs>
         <pattern
@@ -137,6 +136,7 @@ export function AnimatedGridPattern({
               repeat: 1,
               delay: index * 0.1,
               repeatType: "reverse",
+              repeatDelay,
             }}
             onAnimationComplete={() => updateSquarePosition(id)}
             key={`${x}-${y}-${index}`}

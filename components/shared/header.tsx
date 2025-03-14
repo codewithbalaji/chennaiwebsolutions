@@ -2,11 +2,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useTheme } from "next-themes";
-import {  Menu as MenuIcon, Moon, Sun} from "lucide-react";
+import { Menu as MenuIcon, Moon, Sun, X } from "lucide-react";
 import Link from "next/link";
 import logoDark from "@/public/Chennai Web Solutions Logo Horizontal - Color.png";
 import logoLight from "@/public/Chennai Web Solutions Logo Horizontal - Color.png";
 import useInvalidPaths from "@/lib/use-invalid-paths";
+import { motion, AnimatePresence } from "framer-motion";
 
 export function Header() {
   const { theme, setTheme } = useTheme();
@@ -19,6 +20,18 @@ export function Header() {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [mobileMenuOpen]);
 
   // Close mobile menu when clicking outside
   useEffect(() => {
@@ -34,113 +47,136 @@ export function Header() {
 
   if(isInvalid) return <></>;
 
+  const menuItems = [
+    { href: "/", label: "HOME" },
+    { href: "/services", label: "SERVICES" },
+    { href: "/works", label: "WORKS" },
+    { href: "/about", label: "ABOUT" },
+    { href: "/blog", label: "BLOG" },
+    { href: "/contact", label: "LET'S TALK", isButton: true }
+  ];
+
   return (
-    <div className="relative w-full py-4 px-6 flex items-center border-b border-gray-200 dark:border-gray-800">
-      {/* Logo on left */}
-      <div className="flex items-center">
-        <Image src={theme === "dark" ? logoDark : logoLight} alt="logo" width={180} height={180}  />
-      </div>
-      
-      {/* Navigation centered - hidden on mobile */}
-      <div className="hidden md:flex flex-1 justify-center space-x-8">
-        <Link href="/" className="font-medium hover:text-blue-600 transition-colors">
-          Home
-        </Link>
-        <Link href="/services" className="font-medium hover:text-blue-600 transition-colors">
-          Services
-        </Link>
-        <Link href="/works" className="font-medium hover:text-blue-600 transition-colors">
-          Works
-        </Link>
-        <Link href="/about" className="font-medium hover:text-blue-600 transition-colors">
-          About
-        </Link>
-        <Link href="/blog" className="font-medium hover:text-blue-600 transition-colors">
-          Blog
-        </Link>
-      </div>
-      
-      {/* Contact and theme toggle on right */}
-      <div className="ml-auto flex items-center gap-4">
-        {/* Contact button - hidden on mobile */}
-        <Link href="/contact" className="hidden md:block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors">
-          Let&apos;s Talk
-        </Link>
+    <>
+      <div className="relative w-full py-4 px-6 flex items-center border-b border-gray-200 dark:border-gray-800">
+        {/* Logo on left */}
+        <div className="flex items-center">
+          <Link href="/">
+            <Image src={theme === "dark" ? logoDark : logoLight} alt="logo" width={180} height={180} />
+          </Link>
+        </div>
         
-        {/* Theme toggle */}
-        {mounted && (
-          <button
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-            aria-label="Toggle theme"
+        {/* Navigation centered - hidden on mobile */}
+        <div className="hidden md:flex flex-1 justify-center space-x-8">
+          {menuItems.map((item, index) => (
+            !item.isButton && (
+              <Link 
+                key={index}
+                href={item.href} 
+                className="font-medium hover:text-[#4361ee] transition-colors"
+              >
+                {item.label}
+              </Link>
+            )
+          ))}
+        </div>
+        
+        {/* Contact and theme toggle on right */}
+        <div className="ml-auto flex items-center gap-4">
+          {/* Contact button - hidden on mobile */}
+          <Link 
+            href="/contact" 
+            className="hidden md:block bg-[#4361ee] hover:bg-[#4361ee]/90 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors"
           >
-            {theme === "dark" ? (
-              <Sun className="h-5 w-5" />
-            ) : (
-              <Moon className="h-5 w-5" />
-            )}
-          </button>
-        )}
-        
-        {/* Mobile menu button */}
-        <div className="relative md:hidden" ref={dropdownRef}>
+            Let&apos;s Talk
+          </Link>
+          
+          {/* Theme toggle */}
+          {mounted && (
+            <button
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              aria-label="Toggle theme"
+            >
+              {theme === "dark" ? (
+                <Sun className="h-5 w-5" />
+              ) : (
+                <Moon className="h-5 w-5" />
+              )}
+            </button>
+          )}
+          
+          {/* Mobile menu button */}
           <button 
-            className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors flex items-center"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="p-2 rounded-full md:hidden bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors flex items-center"
+            onClick={() => setMobileMenuOpen(true)}
           >
             <MenuIcon className="h-5 w-5" />
           </button>
-          
-          {/* Mobile dropdown menu */}
-          {mobileMenuOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-900 rounded-md shadow-lg py-1 z-50">
-              <Link 
-                href="/" 
-                className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Home
-              </Link>
-              <Link 
-                href="/services" 
-                className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Services
-              </Link>
-              <Link 
-                href="/works" 
-                className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Works
-              </Link>
-              <Link 
-                href="/about" 
-                className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                About
-              </Link>
-              <Link 
-                href="/blog" 
-                className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Blog
-              </Link>
-              <div className="border-t border-gray-200 dark:border-gray-700 my-1"></div>
-              <Link 
-                href="/contact" 
-                className="block px-4 py-2 text-sm text-blue-600 hover:bg-gray-100 dark:hover:bg-gray-800"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Let&apos;s Talk
-              </Link>
-            </div>
-          )}
         </div>
       </div>
-    </div>
+
+      {/* Mobile menu overlay */}
+      <AnimatePresence >
+        {mobileMenuOpen && (
+          <>
+            {/* Dark overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.5 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black z-40"
+              onClick={() => setMobileMenuOpen(false)}
+            />
+
+            {/* Side panel */}
+            <motion.div
+              ref={dropdownRef}
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "tween", duration: 0.3 }}
+              className="fixed right-0 top-0 h-full w-[300px] bg-white dark:bg-[#0f172a] shadow-xl z-100 overflow-y-auto"
+            >
+              <div className="p-6">
+                {/* Close button and logo */}
+                <div className="flex justify-between items-center mb-8">
+                  <Image 
+                    src={theme === "dark" ? logoDark : logoLight} 
+                    alt="logo" 
+                    width={140} 
+                    height={140} 
+                  />
+                  <button
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
+                  >
+                    <X className="h-6 w-6" />
+                  </button>
+                </div>
+
+                {/* Menu items */}
+                <nav className="space-y-6">
+                  {menuItems.map((item, index) => (
+                    <Link
+                      key={index}
+                      href={item.href}
+                      className={`block text-lg font-medium ${
+                        item.isButton
+                          ? "bg-[#4361ee] text-white px-6 py-3 rounded-full text-center mt-8"
+                          : "hover:text-[#4361ee] transition-colors"
+                      }`}
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </nav>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

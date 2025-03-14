@@ -145,7 +145,7 @@ function LandingHero() {
 
       <div className="flex flex-col justify-center items-center w-[90%] sm:w-[85%] md:w-[80%] z-50 pointer-events-auto">
         <motion.h1
-          className="text-3xl sm:text-4xl md:text-7xl text-center w-full justify-center items-center flex-col flex leading-tight font-calendas tracking-tight space-y-2 md:space-y-3"
+          className="text-4xl sm:text-4xl md:text-7xl text-center w-full justify-center items-center flex-col flex leading-tight font-calendas tracking-tight space-y-1 md:space-y-3"
           animate={{ opacity: 1, y: 0 }}
           initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.2, ease: "easeOut", delay: 0.3 }}
@@ -167,7 +167,7 @@ function LandingHero() {
                   "Digital Marketing",
                   
                 ]}
-                mainClassName="overflow-hidden text-[#4361ee] py-0 pb-2 md:pb-4 rounded-xl mt-2 sm:mt-0"
+                mainClassName="overflow-hidden text-[#4361ee] py-0 pb-1 md:pb-4 rounded-xl mt-1 sm:mt-0"
                 staggerDuration={0.03}
                 staggerFrom="last"
                 rotationInterval={3000}
@@ -179,7 +179,7 @@ function LandingHero() {
           </LayoutGroup>
         </motion.h1>
         <motion.p
-          className="text-base sm:text-lg md:text-2xl text-center font-poppins pt-4 sm:pt-6 md:pt-8 px-4"
+          className="text-lg sm:text-lg md:text-2xl text-center font-poppins pt-2 sm:pt-6 md:pt-8 px-4"
           animate={{ opacity: 1, y: 0 }}
           initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.2, ease: "easeOut", delay: 0.5 }}
@@ -187,7 +187,7 @@ function LandingHero() {
           We empower businesses with cutting-edge web & app solutions, turning ideas into a strong digital presence.
         </motion.p>
 
-        <div className="flex flex-col sm:flex-row justify-center space-y-3 sm:space-y-0 sm:space-x-4 items-center mt-6 sm:mt-8 md:mt-12 w-full px-6 sm:px-0">
+        <div className="flex flex-col sm:flex-row justify-center space-y-3 sm:space-y-0 sm:space-x-4 items-center mt-4 sm:mt-8 md:mt-12 w-full px-6 sm:px-0">
           <motion.button
             className="w-full sm:w-auto text-base md:text-xl font-semibold tracking-tight text-background bg-foreground px-5 py-3 sm:px-6 sm:py-3 md:px-8 md:py-4 rounded-full z-20 shadow-2xl font-poppins"
             animate={{ opacity: 1, y: 0 }}

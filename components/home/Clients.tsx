@@ -121,16 +121,16 @@ export function Clients() {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="flex justify-center"
         >
-          <Link href="/contact">
-            <motion.button
+        <Link href="/contact">
+          <motion.button
               className="text-lg md:text-xl font-semibold tracking-tight text-white bg-[#4361ee] px-6 py-3 md:px-8 md:py-4 rounded-full shadow-lg font-poppins"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
               Join Our Client List <span className="ml-1">→</span>
-            </motion.button>
-          </Link>
+          </motion.button>
+        </Link>
         </motion.div>
       </div>
     </section>
