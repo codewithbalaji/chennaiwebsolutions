@@ -138,16 +138,21 @@ function formatDate(dateString: string) {
 
 //@ts-expect-error some error
 export default async function AboutPage({ params }: { params: { slug: string } }) {
-  // Properly await the params object before accessing its properties
   const { slug } = await params;
   const author = await getAuthor(slug)
   
   if (!author) {
     return (
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex justify-center items-center min-h-[70vh]">
         <div className="text-center">
-          <h1 className="text-2xl font-bold">Profile not found</h1>
-          <p className="mt-2">The profile you&apos;re looking for doesn&apos;t exist or has been removed.</p>
+          <h1 className="text-3xl font-bold mb-4">Profile not found</h1>
+          <p className="text-gray-600 dark:text-gray-400 mb-8">The profile you&apos;re looking for doesn&apos;t exist or has been removed.</p>
+          <Link 
+            href="/about" 
+            className="inline-flex items-center px-6 py-3 text-white bg-blue-600 rounded-full hover:bg-blue-700 transition-colors"
+          >
+            ← Back to Team
+          </Link>
         </div>
       </div>
     )
@@ -157,19 +162,43 @@ export default async function AboutPage({ params }: { params: { slug: string } }
 
   return (
     <div className="flex flex-col items-center w-full bg-background">
-      <div className="w-full max-w-[1200px] mx-auto px-4 md:px-8 pt-12 pb-16">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 w-full h-full">
+        <div className="absolute inset-0 opacity-20 dark:opacity-10">
+          {Array.from({ length: 20 }).map((_, rowIndex) => (
+            <div key={`row-${rowIndex}`} className="flex justify-around">
+              {Array.from({ length: 30 }).map((_, colIndex) => (
+                <div 
+                  key={`dot-${rowIndex}-${colIndex}`} 
+                  className="w-1 h-1 rounded-full bg-gray-400 dark:bg-white m-6"
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="relative z-10 w-full max-w-[1200px] mx-auto px-4 md:px-8 pt-12 pb-16">
+        {/* Back Button */}
+        <Link 
+          href="/about" 
+          className="inline-flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 mb-8 transition-colors"
+        >
+          ← Back to Team
+        </Link>
+
         {/* Author Profile Header */}
-        <div className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-12">
-          <div className="relative w-32 h-32 md:w-48 md:h-48">
-            <Avatar className="w-full h-full">
+        <div className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-12 bg-white dark:bg-[#002340] p-8 rounded-2xl shadow-lg">
+          <div className="relative w-32 h-32 md:w-48 md:h-48 shrink-0">
+            <Avatar className="w-full h-full border-4 border-white dark:border-[#002340] shadow-lg">
               <AvatarImage src={author.image ? urlFor(author.image).url() : ''} />
               <AvatarFallback className="text-4xl">{author.name?.substring(0, 2) || 'AU'}</AvatarFallback>
             </Avatar>
           </div>
           
           <div className="flex-1 text-center md:text-left">
-            <h1 className="text-3xl md:text-4xl font-bold mb-4">{author.name}</h1>
-            <div className="prose prose-lg max-w-none">
+            <h1 className="text-3xl md:text-4xl font-bold mb-4 font-calendas">{author.name}</h1>
+            <div className="prose prose-lg dark:prose-invert max-w-none">
               {author.content && (
                 <PortableText 
                   value={author.content} 
@@ -177,7 +206,7 @@ export default async function AboutPage({ params }: { params: { slug: string } }
                 />
               )}
               {!author.content && (
-                <p className="text-muted-foreground">
+                <p className="text-gray-600 dark:text-gray-400">
                   Professional content creator and industry expert.
                 </p>
               )}
@@ -188,17 +217,19 @@ export default async function AboutPage({ params }: { params: { slug: string } }
         {/* Author's Posts */}
         {authorPosts.length > 0 && (
           <div className="mt-12">
-            <h2 className="text-2xl font-bold mb-8">Articles by {author.name}</h2>
+            <h2 className="text-2xl font-bold mb-8 font-calendas">
+              Articles by {author.name}
+            </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {authorPosts.map((post: Post) => (
                 <Link 
                   key={post._id} 
                   href={`/blog/${post.slug.current}`}
-                  className="group cursor-pointer block"
+                  className="group cursor-pointer"
                 >
-                  <div className="flex flex-col h-full">
-                    <div className="relative h-48 w-full overflow-hidden rounded-lg mb-3">
+                  <div className="flex flex-col h-full bg-white dark:bg-[#002340] rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl">
+                    <div className="relative h-48 w-full overflow-hidden">
                       <Image
                         src={urlFor(post.image).url()}
                         fill
@@ -206,15 +237,19 @@ export default async function AboutPage({ params }: { params: { slug: string } }
                         className="object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                     </div>
-                    <div className="space-y-2">
+                    <div className="p-6 space-y-3">
                       <div className="flex items-center space-x-2">
-                        <span className="px-2 py-1 text-xs bg-gray-100 text-black rounded-full">Blog</span>
-                        <span className="text-xs text-muted-foreground">{formatDate(post._createdAt.toString())}</span>
+                        <span className="px-3 py-1 text-xs bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-200 rounded-full">
+                          Blog
+                        </span>
+                        <span className="text-xs text-gray-600 dark:text-gray-400">
+                          {formatDate(post._createdAt.toString())}
+                        </span>
                       </div>
-                      <h3 className="text-lg font-semibold group-hover:text-primary transition-colors">
+                      <h3 className="text-lg font-semibold group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                         {post.title}
                       </h3>
-                      <p className="text-sm text-muted-foreground line-clamp-2">
+                      <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
                         {post.description}
                       </p>
                     </div>

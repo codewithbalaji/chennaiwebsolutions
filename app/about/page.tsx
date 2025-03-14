@@ -1,7 +1,7 @@
 import React from 'react'
-
-export default function about() {
+import About from '@/components/about/About'
+export default function AboutPage() {
   return (
-    <div>about</div>
+    <About />
   )
 }

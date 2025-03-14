@@ -5,7 +5,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { Poppins } from 'next/font/google'
 import Footer from '@/components/shared/footer'
-
+import Preheader from '@/components/shared/preheader'
 // Load Poppins font with specific weights
 const poppins = Poppins({
   subsets: ['latin'],
@@ -29,6 +29,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased font-poppins`}>
         <ThemeProvider>
           <main className="container mx-auto">
+            <Preheader />
             <Header />
             {children}
             <Footer />

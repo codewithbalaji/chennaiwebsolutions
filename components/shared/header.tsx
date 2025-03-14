@@ -4,7 +4,8 @@ import Image from "next/image";
 import { useTheme } from "next-themes";
 import {  Menu as MenuIcon, Moon, Sun} from "lucide-react";
 import Link from "next/link";
-import logo from "@/public/CWS Bullet Blue.svg";
+import logoDark from "@/public/Chennai Web Solutions Logo Horizontal - Color.png";
+import logoLight from "@/public/Chennai Web Solutions Logo Horizontal - Color.png";
 import useInvalidPaths from "@/lib/use-invalid-paths";
 
 export function Header() {
@@ -37,8 +38,7 @@ export function Header() {
     <div className="relative w-full py-4 px-6 flex items-center border-b border-gray-200 dark:border-gray-800">
       {/* Logo on left */}
       <div className="flex items-center">
-        <Image src={logo} alt="logo" width={50} height={50}  />
-        <h1 className="text-lg font-bold">Chennai Web Solutions</h1>
+        <Image src={theme === "dark" ? logoDark : logoLight} alt="logo" width={180} height={180}  />
       </div>
       
       {/* Navigation centered - hidden on mobile */}
@@ -100,6 +100,13 @@ export function Header() {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Home
+              </Link>
+              <Link 
+                href="/services" 
+                className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Services
               </Link>
               <Link 
                 href="/works" 

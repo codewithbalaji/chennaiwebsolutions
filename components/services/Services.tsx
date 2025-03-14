@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { AnimatedGridPattern } from '../ui/animated-grid-pattern';
+import { GradientHeading } from "@/components/ui/gradient-heading"
 
 // Import services data with SVG icons
 const services = [
@@ -154,17 +155,15 @@ export default function Services() {
           >
             OUR SERVICES
           </motion.p>
-          <motion.h1 
-            className="text-4xl md:text-6xl font-bold text-neutral-900 dark:text-white mt-2"
-            variants={fadeInUp}
-          >
-            What We Offer
-          </motion.h1>
+          <GradientHeading variant="default" size="xxl" weight="bold" className="mt-2">
+            What We <span className="text-[#4361ee]">Offer</span>
+          </GradientHeading>
           <motion.p 
             className="mt-6 text-neutral-600 dark:text-neutral-300 max-w-2xl mx-auto"
             variants={fadeInUp}
           >
-            We provide comprehensive digital solutions to help your business grow and thrive in the digital landscape. Our expert team is dedicated to delivering high-quality services tailored to your specific needs.
+            We provide comprehensive digital solutions to help your business grow and thrive in the digital landscape. 
+            Our expert team is dedicated to delivering high-quality services tailored to your specific needs.
           </motion.p>
         </motion.div>
 
