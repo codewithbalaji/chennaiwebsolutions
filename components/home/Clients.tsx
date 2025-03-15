@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { GradientHeading } from "@/components/ui/gradient-heading";
-import { LogoCarousel } from "@/components/ui/logo-carousel";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 // Array with logos
 const allLogos = [
@@ -14,74 +14,28 @@ const allLogos = [
     img: "https://res.cloudinary.com/dryhpaq1t/image/upload/v1740752141/tespa_logo_fvfey9.jpg" 
   },
   { 
-    name: "TVS", 
-    id: 2, 
-    img: "https://res.cloudinary.com/dryhpaq1t/image/upload/v1740733283/client-41_ofeuje.jpg" 
-  },
-  { 
-    name: "L&T", 
-    id: 3, 
-    img: "https://res.cloudinary.com/dryhpaq1t/image/upload/v1740733279/client-22_ghl6dq.jpg" 
-  },
-  { 
     name: "Ashok Leyland", 
-    id: 4, 
+    id: 2, 
     img: "https://res.cloudinary.com/dryhpaq1t/image/upload/v1740733278/client-1_iehmud.jpg" 
   },
   { 
-    name: "Caterpillar", 
-    id: 5, 
-    img: "https://res.cloudinary.com/dryhpaq1t/image/upload/v1740733279/client-6_sksaxh.jpg" 
+    name: "Sri Balaji Printers", 
+    id: 3, 
+    img: "https://res.cloudinary.com/dryhpaq1t/image/upload/v1742050574/sribalajiprinters_nceieb.png" 
   },
   { 
-    name: "Mahindra", 
-    id: 6, 
-    img: "https://res.cloudinary.com/dryhpaq1t/image/upload/v1740733280/client-26_lknxxi.jpg" 
+    name: "Vei Technologies", 
+    id: 4, 
+    img: "https://res.cloudinary.com/dryhpaq1t/image/upload/v1742050566/veitech_wnybxf.png" 
   },
-  { 
-    name: "DRDO", 
-    id: 7, 
-    img: "https://res.cloudinary.com/dryhpaq1t/image/upload/v1740733281/client-9_tcjvef.jpg" 
-  },
-  {
-    name: "USHA",
-    id: 8,
-    img: "https://res.cloudinary.com/dryhpaq1t/image/upload/v1740733284/client-42_xilhw4.jpg"
-  },
-  {
-    name: "talbros",
-    id: 9,
-    img: "https://res.cloudinary.com/dryhpaq1t/image/upload/v1740733285/cli53_r0qbkq.png"
-  }
 ];
 
-export function Clients() {
-  const [columnCount, setColumnCount] = useState(3);
-  
-  useEffect(() => {
-    // Function to update column count based on screen width
-    const updateColumnCount = () => {
-      if (window.innerWidth >= 768) {
-        setColumnCount(6);
-      } else {
-        setColumnCount(3);
-      }
-    };
-    
-    // Set initial column count
-    updateColumnCount();
-    
-    // Add event listener for window resize
-    window.addEventListener('resize', updateColumnCount);
-    
-    // Clean up event listener on component unmount
-    return () => {
-      window.removeEventListener('resize', updateColumnCount);
-    };
-  }, []);
+// Double the logos array for seamless infinite scroll
+const infiniteLogos = [...allLogos, ...allLogos];
 
+export function Clients() {
   return (
-    <section className="py-20 md:py-28 px-6 md:px-8 bg-neutral-50 dark:bg-zinc-950/30">
+    <section className="py-20 md:py-28 px-6 md:px-8 bg-neutral-50 dark:bg-zinc-950/30 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -104,15 +58,48 @@ export function Clients() {
           </motion.p>
         </motion.div>
         
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="mb-16"
-        >
-          <LogoCarousel columnCount={columnCount} logos={allLogos} />
-        </motion.div>
+        <div className="relative w-full overflow-hidden mb-16">
+          <motion.div 
+            className="flex gap-8 md:gap-12"
+            animate={{
+              x: ["0%", "-50%"]
+            }}
+            transition={{
+              x: {
+                duration: 20,
+                repeat: Infinity,
+                ease: "linear",
+              }
+            }}
+            style={{
+              width: "fit-content"
+            }}
+          >
+            {infiniteLogos.map((logo, index) => (
+              <motion.div
+                key={`${logo.id}-${index}`}
+                className="relative h-24 w-36 md:h-32 md:w-48 lg:h-40 lg:w-56 flex-shrink-0"
+                whileHover={{ 
+                  scale: 1.05,
+                  transition: { duration: 0.2 }
+                }}
+              >
+                <Image
+                  src={logo.img}
+                  alt={logo.name}
+                  width={200}
+                  height={200}
+                  className="w-full h-full object-contain transition-all duration-300 hover:brightness-110"
+                  priority
+                />
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Gradient Overlays */}
+          <div className="absolute top-0 left-0 h-full w-20 bg-gradient-to-r from-neutral-50 to-transparent dark:from-zinc-950/30 z-10" />
+          <div className="absolute top-0 right-0 h-full w-20 bg-gradient-to-l from-neutral-50 to-transparent dark:from-zinc-950/30 z-10" />
+        </div>
         
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -121,16 +108,16 @@ export function Clients() {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="flex justify-center"
         >
-        <Link href="/contact">
-          <motion.button
+          <Link href="/contact">
+            <motion.button
               className="text-lg md:text-xl font-semibold tracking-tight text-white bg-[#4361ee] px-6 py-3 md:px-8 md:py-4 rounded-full shadow-lg font-poppins"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
               Join Our Client List <span className="ml-1">→</span>
-          </motion.button>
-        </Link>
+            </motion.button>
+          </Link>
         </motion.div>
       </div>
     </section>

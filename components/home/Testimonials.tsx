@@ -3,7 +3,6 @@
 import { useRef } from "react"
 import { motion } from "framer-motion"
 import { GradientHeading } from "@/components/ui/gradient-heading"
-import Image from "next/image"
 
 type Testimonial = {
   author: {
@@ -18,57 +17,57 @@ type Testimonial = {
 const testimonials: Testimonial[] = [
   {
     author: {
-      name: "Emma Thompson",
-      role: "Marketing Director",
-      company: "TechGrowth",
-      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face"
+      name: "Ramesh Kannan",
+      role: "Owner",
+      company: "Sri Murugan Textiles",
+      avatar: ""
     },
-    text: "Using this platform has transformed how we handle our online presence. The speed and quality of work are unprecedented.",
+    text: "Our textile showroom's online presence has brought in customers from all over Tamil Nadu. The website design perfectly showcases our traditional and modern collections.",
   },
   {
     author: {
-      name: "David Park",
-      role: "CEO",
-      company: "InnovateTech",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
+      name: "Lakshmi Devi",
+      role: "Managing Partner",
+      company: "Mylapore Silks",
+      avatar: ""
     },
-    text: "The website integration is flawless. We've increased our conversion rate by 60% since implementing this solution.",
+    text: "The e-commerce platform they built has helped us reach customers worldwide. Our silk sarees and traditional wear are now easily accessible online.",
   },
   {
     author: {
-      name: "Sofia Rodriguez",
-      role: "Product Manager",
-      company: "GlobalApps",
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face"
+      name: "Abdul Rahman",
+      role: "Proprietor",
+      company: "Chennai Fresh Exports",
+      avatar: ""
     },
-    text: "Finally, a development team that actually understands our business needs! The communication and results are impressive."
+    text: "Their work on our export business website has helped us connect with international buyers. The platform is user-friendly and showcases our products effectively."
   },
   {
     author: {
-      name: "Michael Chen",
-      role: "E-commerce Director",
-      company: "ShopWave",
-      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face"
+      name: "Vijayalakshmi Rajan",
+      role: "Director",
+      company: "Sowcarpet Wholesale Mart",
+      avatar: ""
     },
-    text: "Our online sales have doubled since launching our new website. The SEO optimization and user experience are top-notch."
+    text: "Moving our wholesale business online was a game-changer. The ordering system they developed is perfect for our bulk buyers and regular customers."
   },
   {
     author: {
-      name: "Priya Sharma",
-      role: "Startup Founder",
-      company: "NexGen Solutions",
-      avatar: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=150&h=150&fit=crop&crop=face"
+      name: "Muthu Krishnan",
+      role: "Owner",
+      company: "Sri Krishna Sweets",
+      avatar: ""
     },
-    text: "From concept to launch in just weeks - these guys delivered exactly what we needed for our MVP, and then some!"
+    text: "Our traditional sweets business has grown beyond Chennai thanks to the online ordering system. Customers love how easy it is to order for festivals and occasions."
   },
   {
     author: {
-      name: "James Wilson",
-      role: "Digital Strategist",
-      company: "MediaForce",
-      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
+      name: "Anandhi Balakrishnan",
+      role: "Proprietor",
+      company: "Pondy Bazaar Fashions",
+      avatar: ""
     },
-    text: "The digital marketing strategy they implemented has completely transformed our online presence and lead generation."
+    text: "The website perfectly represents our fashion boutique's style. We're now reaching customers across South India, and our online sales have been exceptional."
   }
 ]
 
@@ -82,13 +81,6 @@ const TestimonialCard = ({ testimonial }: { testimonial: Testimonial }) => {
       </div>
       <p className="text-neutral-700 dark:text-neutral-300 flex-grow mb-6">{testimonial.text}</p>
       <div className="flex items-center mt-auto">
-        <Image 
-          src={testimonial.author.avatar} 
-          alt={testimonial.author.name} 
-          width={48}
-          height={48}
-          className="w-12 h-12 rounded-full mr-4 object-cover"
-        />
         <div>
           <h4 className="font-bold text-neutral-900 dark:text-white">{testimonial.author.name}</h4>
           <p className="text-sm text-neutral-500 dark:text-neutral-400">
