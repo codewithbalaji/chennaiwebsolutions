@@ -10,8 +10,42 @@ const servicesSlugs = [
   "app-development",
   "seo",
   "e-commerce",
-  "digital-marketing"
+  "digital-marketing",
 ];
+
+// Team members
+const teamMembers = [
+  "balaji-d",
+  "santhosh-d",
+  "deepan-b",
+  "joshua-vince",
+  "yogeshwaran-b"
+];
+
+// Location pages for SEO
+const locationSlugs = [
+  "chennai",
+  "tamil-nadu",
+  "erode",
+  "salem",
+  "coimbatore",
+  "madurai",
+  "trichy",
+  "pondicherry",
+  "kerala",
+  "ambattur",
+  "thiruvallur",
+  "avadi",
+  "india",
+  "mumbai",
+  "delhi",
+  "bangalore",
+  "hyderabad",
+  "kolkata",
+  "pune",
+  "noida",
+];
+
 
 interface SanityDocument {
   slug: {
@@ -42,7 +76,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     getAllProjects(),
   ]);
 
-  // Static pages
+  // Static pages with enhanced SEO priority
   const staticPages = [
     {
       url: `${baseUrl}`,
@@ -59,13 +93,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     {
       url: `${baseUrl}/contact`,
       lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.8,
+      changeFrequency: "weekly" as const,
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/works`,
       lastModified: new Date(),
-      changeFrequency: "weekly" as const,
+      changeFrequency: "daily" as const,
       priority: 0.9,
     },
     {
@@ -82,12 +116,38 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  // Service pages
-  const servicePages = servicesSlugs.map(slug => ({
-    url: `${baseUrl}/services/${slug}`,
+  // Service pages with location variants
+  const servicePages = servicesSlugs.flatMap(slug => [
+    // Main service page
+    {
+      url: `${baseUrl}/services/${slug}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    },
+    // Location variants for SEO (these will redirect to main service page)
+    ...locationSlugs.map(location => ({
+      url: `${baseUrl}/services/${slug}/in/${location}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    }))
+  ]);
+
+  // Location-based service index pages
+  const locationServicePages = locationSlugs.map(location => ({
+    url: `${baseUrl}/services/in/${location}`,
     lastModified: new Date(),
     changeFrequency: "monthly" as const,
-    priority: 0.8,
+    priority: 0.7,
+  }));
+
+  // Team member pages
+  const teamPages = teamMembers.map(member => ({
+    url: `${baseUrl}/about/${member}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
   }));
 
   // Blog post pages
@@ -102,9 +162,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const projectPages = projects.map((project: SanityDocument) => ({
     url: `${baseUrl}/works/${project.slug.current}`,
     lastModified: new Date(project._updatedAt),
-    changeFrequency: "weekly" as const,
-    priority: 0.7,
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
   }));
 
-  return [...staticPages, ...servicePages, ...blogPostPages, ...projectPages];
+  return [
+    ...staticPages,
+    ...servicePages,
+    ...locationServicePages,
+    ...teamPages,
+    ...blogPostPages,
+    ...projectPages,
+  ];
 } 
