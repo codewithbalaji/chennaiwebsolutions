@@ -1,6 +1,6 @@
 import { client } from "@/sanity/lib/client"
 import { urlFor } from "@/sanity/lib/image"
-import { PortableText } from "@portabletext/react"
+import { PortableText, PortableTextComponents } from "@portabletext/react"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -37,6 +37,41 @@ async function getProject(slug: string) {
 
   const project = await client.fetch(query, { slug })
   return project
+}
+
+const components: PortableTextComponents = {
+  block: {
+    h1: ({children}) => (
+      <h1 className="text-3xl font-bold font-calendas mt-12 mb-6 text-neutral-900 dark:text-white">{children}</h1>
+    ),
+    h2: ({children}) => (
+      <h2 className="text-2xl font-bold font-calendas mt-10 mb-4 text-neutral-900 dark:text-white">{children}</h2>
+    ),
+    h3: ({children}) => (
+      <h3 className="text-xl font-bold font-calendas mt-8 mb-3 text-neutral-900 dark:text-white">{children}</h3>
+    ),
+    normal: ({children}) => (
+      <p className="mb-6 leading-7 text-neutral-600 dark:text-neutral-400">{children}</p>
+    ),
+  },
+  list: {
+    bullet: ({children}) => (
+      <ul className="mb-6 ml-6 space-y-3 list-disc marker:text-[#4361ee]">{children}</ul>
+    ),
+  },
+  listItem: {
+    bullet: ({children}) => (
+      <li className="text-neutral-600 dark:text-neutral-400 pl-2">{children}</li>
+    ),
+  },
+  marks: {
+    strong: ({children}) => (
+      <strong className="font-semibold text-neutral-900 dark:text-white">{children}</strong>
+    ),
+    em: ({children}) => (
+      <em className="italic">{children}</em>
+    ),
+  },
 }
 
 export default async function ProjectPage({ params }: Props) {
@@ -93,9 +128,12 @@ export default async function ProjectPage({ params }: Props) {
           {/* Project Details */}
           <div className="grid md:grid-cols-3 gap-12 mb-16">
             <div className="md:col-span-2">
-              <h2 className="text-2xl font-bold mb-6 font-calendas">About the Project</h2>
-              <div className="prose dark:prose-invert max-w-none prose-headings:font-calendas prose-p:text-neutral-600 dark:prose-p:text-neutral-400">
-                <PortableText value={project.content} />
+              <h2 className="text-2xl font-bold mb-8 font-calendas text-neutral-900 dark:text-white">About the Project</h2>
+              <div className="space-y-4">
+                <PortableText 
+                  value={project.content} 
+                  components={components}
+                />
               </div>
             </div>
             

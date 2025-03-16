@@ -1,7 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { AnimatedGridPattern } from "../ui/animated-grid-pattern";
+import HCaptcha from '@hcaptcha/react-hcaptcha'
 
 const steps = [
   { number: "01", title: "Consultation" },
@@ -21,9 +22,30 @@ const requirements = [
   "DIGITAL MARKETING"
 ];
 
+// Add form state interface
+interface FormData {
+  name: string
+  email: string
+  phone: string
+  requirements: string[]
+}
+
 export default function Contact() {
   const [selectedRequirements, setSelectedRequirements] = useState<string[]>([]);
   const [isHuman, setIsHuman] = useState(false);
+  const [formData, setFormData] = useState<FormData>({
+    name: '',
+    email: '',
+    phone: '',
+    requirements: []
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{
+    success?: boolean
+    message?: string
+  }>({});
+  const [captchaToken, setCaptchaToken] = useState<string>('')
+  const captchaRef = useRef(null)
 
   const toggleRequirement = (req: string) => {
     setSelectedRequirements(prev =>
@@ -31,6 +53,75 @@ export default function Contact() {
         ? prev.filter(r => r !== req)
         : [...prev, req]
     );
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  };
+
+  const onCaptchaChange = (token: string) => {
+    setCaptchaToken(token)
+    setIsHuman(!!token)
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!captchaToken) {
+      setSubmitStatus({
+        success: false,
+        message: 'Please complete the captcha verification'
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        },
+        body: JSON.stringify({
+          access_key: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY, // Replace with your Web3Forms access key
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          requirements: selectedRequirements.join(', '),
+          'h-captcha-response': captchaToken // Add captcha token
+        })
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        setSubmitStatus({
+          success: true,
+          message: 'Thank you for your submission!'
+        });
+        // Reset form
+        setFormData({ name: '', email: '', phone: '', requirements: [] });
+        setSelectedRequirements([]);
+        setIsHuman(false);
+        setCaptchaToken('');
+        // Reset captcha
+        if (captchaRef.current) {
+          // @ts-expect-error: Object is possibly 'null'
+          captchaRef.current.resetCaptcha();
+        }
+      }
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+      setSubmitStatus({
+        success: false,
+        message: errorMessage
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -104,60 +195,77 @@ export default function Contact() {
               ))}
             </div>
 
-            <form className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-6">
                 <div className="relative">
                   <input
                     type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
                     placeholder="Name"
+                    required
                     className="w-full bg-transparent border-b-2 border-neutral-200 dark:border-white/20 p-2 text-neutral-800 dark:text-white focus:outline-none focus:border-red-500 dark:focus:border-red-500 transition-colors duration-300 placeholder-neutral-400"
                   />
                 </div>
                 <div className="relative">
                   <input
                     type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
                     placeholder="Email"
+                    required
                     className="w-full bg-transparent border-b-2 border-neutral-200 dark:border-white/20 p-2 text-neutral-800 dark:text-white focus:outline-none focus:border-red-500 dark:focus:border-red-500 transition-colors duration-300 placeholder-neutral-400"
                   />
                 </div>
                 <div className="relative">
                   <input
                     type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
                     placeholder="Phone"
+                    required
                     className="w-full bg-transparent border-b-2 border-neutral-200 dark:border-white/20 p-2 text-neutral-800 dark:text-white focus:outline-none focus:border-red-500 dark:focus:border-red-500 transition-colors duration-300 placeholder-neutral-400"
                   />
                 </div>
               </div>
 
               <div className="space-y-4">
-                <label className="flex items-center space-x-2 text-neutral-800 dark:text-white cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={isHuman}
-                    onChange={(e) => setIsHuman(e.target.checked)}
-                    className="rounded border-2 border-neutral-300 dark:border-white/20 text-red-500 focus:ring-red-500 transition-colors duration-300"
+                <div className="flex justify-center">
+                  <HCaptcha
+                    ref={captchaRef}
+                    sitekey={process.env.NEXT_PUBLIC_HCAPTCHA_SITEKEY || '50b2fe65-b00b-4b9e-ad62-3ba471098be2'}
+                    onVerify={onCaptchaChange}
+                    onExpire={() => {
+                      setIsHuman(false)
+                      setCaptchaToken('')
+                    }}
+                    reCaptchaCompat={false}
                   />
-                  <span className="select-none">I am human</span>
-                </label>
-
-                {/* Placeholder Captcha */}
-                <div className="border-2 border-neutral-200 dark:border-white/20 rounded-xl p-4 transition-colors duration-300">
-                  <div className="flex items-center justify-between">
-                    <div className="text-neutral-700 dark:text-white/60 text-sm font-medium">Captcha Verification</div>
-                    <div className="bg-neutral-100 dark:bg-white/10 px-3 py-1 rounded-lg text-xs text-neutral-600 dark:text-white/60 transition-colors duration-300 font-medium">
-                      Demo Mode
-                    </div>
-                  </div>
                 </div>
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-neutral-900 dark:bg-red-500 text-white py-3 px-6 rounded-lg hover:bg-red-500 dark:hover:bg-red-600 transition-all duration-300 flex items-center justify-center space-x-2 font-medium shadow-sm hover:shadow-md"
+                disabled={isSubmitting || !isHuman}
+                className="w-full bg-neutral-900 dark:bg-red-500 text-white py-3 px-6 rounded-lg hover:bg-red-500 dark:hover:bg-red-600 transition-all duration-300 flex items-center justify-center space-x-2 font-medium shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <span>Submit</span>
-                <span>→</span>
+                <span>{isSubmitting ? 'Submitting...' : 'Submit'}</span>
+                {!isSubmitting && <span>→</span>}
               </button>
+
+              {/* Add status message */}
+              {submitStatus.message && (
+                <div className={`text-center p-2 rounded ${
+                  submitStatus.success 
+                    ? 'text-green-600 dark:text-green-400' 
+                    : 'text-red-600 dark:text-red-400'
+                }`}>
+                  {submitStatus.message}
+                </div>
+              )}
             </form>
           </div>
         </div>

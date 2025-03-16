@@ -35,7 +35,7 @@ type Props = {
     return {
       applicationName: site.name,
       creator: "Chennai Web Solutions",
-      metadataBase: new URL(site.url),
+      metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://www.chennaiwebsolutions.com'),
       title: data.title,
       description: data.description,
       openGraph: {
