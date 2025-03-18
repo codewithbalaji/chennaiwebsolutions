@@ -3,6 +3,14 @@ import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
+  
+  // First convert the pathname to lowercase
+  const lowercasePathname = pathname.toLowerCase()
+  
+  // If the original pathname had uppercase letters, rewrite to lowercase
+  if (pathname !== lowercasePathname) {
+    return NextResponse.rewrite(new URL(lowercasePathname, request.url))
+  }
 
   // Check if the URL matches our location-based pattern
   if (pathname.match(/^\/services\/([^/]+)\/in\/(chennai|tamil-nadu|india)/)) {
@@ -38,9 +46,10 @@ export function middleware(request: NextRequest) {
   return NextResponse.next()
 }
 
-// Configure the middleware to only run on specific paths
+// Configure the middleware to run on all paths
 export const config = {
   matcher: [
+    '/((?!api|_next/static|_next/image|favicon.ico).*)',
     '/services/:path*/in/:location*',
     '/services/in/:location*'
   ]

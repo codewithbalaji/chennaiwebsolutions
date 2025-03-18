@@ -11,6 +11,7 @@ import { site } from '@/app/site'
 import { Post } from '@/@types'
 
 
+
 // Define custom components for the Portable Text renderer
 const ptComponents: PortableTextComponents = {
   types: {
@@ -57,8 +58,8 @@ type Props = {
 
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  // Properly await the params object before accessing its properties
-  const { slug } = await params;
+  // Already correctly awaiting params
+  const { slug } = await params
   
   const query = `
     *[_type == 'author' && slug.current == $slug][0] {
@@ -84,7 +85,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     applicationName: site.name,
     creator: site.name,
-    metadataBase: new URL(site.url),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://www.chennaiwebsolutions.com'),
     title,
     description,
     openGraph: {
@@ -100,7 +101,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       images: author.image ? urlFor(author.image).url() : '/images/default-author.jpg',
     },
-    authors: [{ name: author.name }]
+    authors: [{ name: author.name }],
+    alternates: {
+      canonical: `${process.env.NEXT_PUBLIC_BASE_URL}/about/${slug}`
+    }
   }
 }
 
@@ -138,7 +142,8 @@ function formatDate(dateString: string) {
 
 //@ts-expect-error some error
 export default async function AboutPage({ params }: { params: { slug: string } }) {
-  const { slug } = await params;
+  // Already correctly awaiting params
+  const { slug } = await params
   const author = await getAuthor(slug)
   
   if (!author) {

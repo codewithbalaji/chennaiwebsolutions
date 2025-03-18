@@ -6,6 +6,7 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import RelatedProjects from "@/components/works/RelatedProjects"
 import { GradientHeading } from "@/components/ui/gradient-heading"
+import { Metadata } from "next"
 
 type Props = {
   params: {
@@ -75,10 +76,10 @@ const components: PortableTextComponents = {
 }
 
 export default async function ProjectPage({ params }: Props) {
-  // Await params before accessing slug
+  // Await params in the page component as well
   const { slug } = await params
   const project = await getProject(slug)
-
+  
   if (!project) {
     notFound()
   }
@@ -214,4 +215,24 @@ export default async function ProjectPage({ params }: Props) {
       </div>
     </article>
   )
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  // Await params before destructuring
+  const { slug } = await params
+  const project = await getProject(slug)
+
+  if (!project) {
+    return {
+      title: 'Project Not Found'
+    }
+  }
+
+  return {
+    title: `${project.title} | Chennai Web Solutions`,
+    description: project.description,
+    alternates: {
+      canonical: `${process.env.NEXT_PUBLIC_BASE_URL}/works/${slug}`
+    }
+  }
 } 

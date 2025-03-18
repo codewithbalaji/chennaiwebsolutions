@@ -275,6 +275,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       locale: 'en_US',
       type: 'website',
     },
+    alternates: {
+      canonical: `/services/${slug}`,
+    }
   };
 }
 

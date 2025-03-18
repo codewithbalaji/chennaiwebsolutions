@@ -45,7 +45,10 @@ type Props = {
         type: "article",
         locale: "en_IN",
       },
-      authors: [{ name: "Chennai Web Solutions" }]
+      authors: [{ name: "Chennai Web Solutions" }],
+      alternates: {
+        canonical: `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${slug}`
+      }
     };
   }
   

@@ -33,6 +33,9 @@ export const metadata: Metadata = {
     template: '%s | Chennai Web Solutions',
   },
   description: 'Chennai Web Solutions offers professional web development and design services in Chennai, India. Get SEO-friendly, responsive, and high-quality websites for your business.',
+  alternates: {
+    canonical: process.env.NEXT_PUBLIC_BASE_URL || 'https://www.chennaiwebsolutions.com',
+  },
   openGraph: {
     title: 'Chennai Web Solutions - Web Development & Design Services',
     description: 'Professional web development and design services in Chennai, India. Build modern, responsive, and SEO-optimized websites with us.',
