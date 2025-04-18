@@ -1,15 +1,15 @@
 'use client'
-import React, { useEffect, useState } from 'react'
-import { client } from '@/sanity/lib/client'
-import { Post } from '@/@types'
+import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { urlFor } from '@/sanity/lib/image'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { motion } from 'framer-motion'
 import { GradientHeading } from "@/components/ui/gradient-heading"
+import { BlogPost } from '@/lib/blogs'
 
-
+type Props = {
+  posts: BlogPost[]
+}
 
 function formatDate(dateString: string) {
   const date = new Date(dateString)
@@ -50,54 +50,7 @@ const fadeInVariants = {
   }
 }
 
-export default function Blog() {
-  const [posts, setPosts] = useState<Post[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    async function fetchPosts() {
-      try {
-        const query = `*[_type == 'post'] | order(_createdAt desc) {
-          ...,
-          author->{
-            _id,
-            name,
-            image,
-            slug
-          }
-        }`
-        
-        const fetchedPosts = await client.fetch(query)
-        setPosts(fetchedPosts)
-      } catch (error) {
-        console.error('Error fetching posts:', error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-    
-    fetchPosts()
-  }, [])
-
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.5, 1, 0.5]
-          }}
-          transition={{
-            duration: 1.5,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-          className="w-12 h-12 rounded-full bg-[#4361ee]/20"
-        />
-      </div>
-    )
-  }
-
+export default function Blog({ posts }: Props) {
   if (posts.length === 0) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -156,7 +109,7 @@ export default function Blog() {
               variants={itemVariants}
               className="mb-20"
             >
-              <Link href={`/blog/${featuredPost.slug.current}`} className="block group">
+              <Link href={`/blog/${featuredPost.slug}`} className="block group">
                 <div className="bg-white dark:bg-zinc-900 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
                   <div className="flex flex-col md:flex-row gap-6">
                     <motion.div 
@@ -165,7 +118,7 @@ export default function Blog() {
                       transition={{ type: "spring", stiffness: 300 }}
                     >
                       <Image
-                        src={urlFor(featuredPost.image).url()}
+                        src={featuredPost.image}
                         fill
                         alt={featuredPost.title}
                         className="object-cover"
@@ -175,7 +128,7 @@ export default function Blog() {
                     <div className="flex flex-col justify-center space-y-4 md:w-1/2 p-8">
                       <div className="flex items-center space-x-2">
                         <span className="px-3 py-1 text-xs font-semibold bg-[#4361ee]/10 text-[#4361ee] rounded-full">Featured</span>
-                        <span className="text-sm text-neutral-600 dark:text-neutral-400">{formatDate(featuredPost._createdAt)}</span>
+                        <span className="text-sm text-neutral-600 dark:text-neutral-400">{formatDate(featuredPost.date)}</span>
                       </div>
                       <h2 className="text-3xl font-bold font-calendas group-hover:text-[#4361ee] transition-colors">
                         {featuredPost.title}
@@ -185,11 +138,10 @@ export default function Blog() {
                       </p>
                       <div className="flex items-center space-x-3 pt-4">
                         <Avatar className="h-10 w-10">
-                          <AvatarImage src={featuredPost.author?.image ? urlFor(featuredPost.author.image).url() : ''} />
-                          <AvatarFallback>{featuredPost.author?.name?.substring(0, 2) || 'AU'}</AvatarFallback>
+                          <AvatarFallback>{featuredPost.author.substring(0, 2)}</AvatarFallback>
                         </Avatar>
                         <div className="flex flex-col">
-                          <span className="text-sm font-medium">{featuredPost.author?.name || 'Author'}</span>
+                          <span className="text-sm font-medium">{featuredPost.author}</span>
                           <span className="text-xs text-neutral-600 dark:text-neutral-400">Author</span>
                         </div>
                       </div>
@@ -205,18 +157,18 @@ export default function Blog() {
             className="grid md:grid-cols-3 gap-8"
             variants={containerVariants}
           >
-            {remainingPosts.map((post: Post, key: number) => (
+            {remainingPosts.map((post, key) => (
               <motion.div
                 key={key}
                 variants={itemVariants}
                 whileHover={{ y: -5 }}
                 className="group"
               >
-                <Link href={`/blog/${post.slug.current}`} className="block h-full">
+                <Link href={`/blog/${post.slug}`} className="block h-full">
                   <div className="bg-white dark:bg-zinc-900 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 h-full">
                     <div className="relative h-48 w-full overflow-hidden">
                       <Image
-                        src={urlFor(post.image).url()}
+                        src={post.image}
                         fill
                         alt={post.title}
                         className="object-cover transition-transform duration-500 group-hover:scale-110"
@@ -226,17 +178,16 @@ export default function Blog() {
                     <div className="p-6 space-y-3">
                       <div className="flex items-center space-x-2">
                         <span className="px-3 py-1 text-xs font-semibold bg-[#4361ee]/10 text-[#4361ee] rounded-full">Blog</span>
-                        <span className="text-sm text-neutral-600 dark:text-neutral-400">{formatDate(post._createdAt)}</span>
+                        <span className="text-sm text-neutral-600 dark:text-neutral-400">{formatDate(post.date)}</span>
                       </div>
                       <h3 className="text-xl font-bold font-calendas group-hover:text-[#4361ee] transition-colors">{post.title}</h3>
                       <p className="text-sm text-neutral-600 dark:text-neutral-400 line-clamp-2">{post.description}</p>
                       <div className="flex items-center space-x-3 pt-4">
                         <Avatar className="h-8 w-8">
-                          <AvatarImage src={post.author?.image ? urlFor(post.author.image).url() : ''} />
-                          <AvatarFallback>{post.author?.name?.substring(0, 2) || 'AU'}</AvatarFallback>
+                          <AvatarFallback>{post.author.substring(0, 2)}</AvatarFallback>
                         </Avatar>
                         <div className="flex flex-col">
-                          <span className="text-sm font-medium">{post.author?.name || 'Author'}</span>
+                          <span className="text-sm font-medium">{post.author}</span>
                           <span className="text-xs text-neutral-600 dark:text-neutral-400">Author</span>
                         </div>
                       </div>

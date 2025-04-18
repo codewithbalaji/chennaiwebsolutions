@@ -68,9 +68,14 @@ export default function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-        {gaId && <GoogleAnalytics gaId={gaId} />}
+      {gaId && <GoogleAnalytics gaId={gaId} />}
       <body className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased font-poppins`}>
-        <ThemeProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem={false}
+          forcedTheme="dark"
+        >
           <main className="container mx-auto">
             <Preheader />
             <Header />

@@ -1,25 +1,16 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { useTheme } from "next-themes";
-import { Menu as MenuIcon, Moon, Sun, X } from "lucide-react";
+import { Menu as MenuIcon, X } from "lucide-react";
 import Link from "next/link";
-import logoDark from "@/public/Chennai Web Solutions Logo Horizontal - Color.png";
-import logoLight from "@/public/Chennai Web Solutions Logo Horizontal - Color.png";
+import logoDark from "@/public/Chennai Web Solutions Logo Type - Color.png";
 import useInvalidPaths from "@/lib/use-invalid-paths";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function Header() {
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const isInvalid: boolean = useInvalidPaths();
-
-  // Ensure theme toggle only renders client-side to avoid hydration mismatch
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
@@ -62,7 +53,7 @@ export function Header() {
         {/* Logo on left */}
         <div className="flex items-center">
           <Link href="/">
-            <Image src={theme === "dark" ? logoDark : logoLight} alt="logo" width={180} height={180} />
+            <Image src={logoDark} alt="logo" width={180} height={180} />
           </Link>
         </div>
         
@@ -81,7 +72,7 @@ export function Header() {
           ))}
         </div>
         
-        {/* Contact and theme toggle on right */}
+        {/* Contact button on right */}
         <div className="ml-auto flex items-center gap-4">
           {/* Contact button - hidden on mobile */}
           <Link 
@@ -90,21 +81,6 @@ export function Header() {
           >
             Let&apos;s Talk
           </Link>
-          
-          {/* Theme toggle */}
-          {mounted && (
-            <button
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-              aria-label="Toggle theme"
-            >
-              {theme === "dark" ? (
-                <Sun className="h-5 w-5" />
-              ) : (
-                <Moon className="h-5 w-5" />
-              )}
-            </button>
-          )}
           
           {/* Mobile menu button */}
           <button 
@@ -117,7 +93,7 @@ export function Header() {
       </div>
 
       {/* Mobile menu overlay */}
-      <AnimatePresence >
+      <AnimatePresence>
         {mobileMenuOpen && (
           <>
             {/* Dark overlay */}
@@ -142,7 +118,7 @@ export function Header() {
                 {/* Close button and logo */}
                 <div className="flex justify-between items-center mb-8">
                   <Image 
-                    src={theme === "dark" ? logoDark : logoLight} 
+                    src={logoDark} 
                     alt="logo" 
                     width={140} 
                     height={140} 

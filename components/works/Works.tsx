@@ -1,24 +1,11 @@
 "use client"
 
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { motion } from "framer-motion"
 import { GradientHeading } from "@/components/ui/gradient-heading"
 import Link from "next/link"
 import Image from "next/image"
-import { client } from "@/sanity/lib/client"
-import { urlFor } from "@/sanity/lib/image"
-import { SanityImageSource } from "@sanity/image-url/lib/types/types"
-
-type Project = {
-  _id: string
-  title: string
-  description: string
-  heroImage: SanityImageSource
-  services: string[]
-  slug: {
-    current: string
-  }
-}
+import { Project } from "@/lib/projects"
 
 const categories = [
   "All",
@@ -60,27 +47,12 @@ const cardVariants = {
   }
 }
 
-export default function Works() {
+type Props = {
+  projects: Project[]
+}
+
+export default function Works({ projects }: Props) {
   const [selectedCategory, setSelectedCategory] = useState("All")
-  const [projects, setProjects] = useState<Project[]>([])
-
-  useEffect(() => {
-    const fetchProjects = async () => {
-      const query = `*[_type == "project"] {
-        _id,
-        title,
-        description,
-        heroImage,
-        services,
-        slug
-      }`
-      
-      const data = await client.fetch(query)
-      setProjects(data)
-    }
-
-    fetchProjects()
-  }, [])
 
   const filteredProjects = projects.filter(project => 
     selectedCategory === "All" ? true : project.services.includes(selectedCategory)
@@ -156,7 +128,7 @@ export default function Works() {
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
             {filteredProjects.map((project) => (
-              <Link key={project._id} href={`/works/${project.slug.current}`}>
+              <Link key={project.slug} href={`/works/${project.slug}`}>
                 <motion.div
                   variants={cardVariants}
                   whileHover="hover"
@@ -164,7 +136,7 @@ export default function Works() {
                 >
                   <div className="relative h-48 overflow-hidden">
                     <Image
-                      src={urlFor(project.heroImage).url()}
+                      src={project.heroImage}
                       alt={project.title}
                       fill
                       className="object-cover transition-transform duration-500 group-hover:scale-110"

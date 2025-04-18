@@ -1,8 +1,6 @@
-import React from 'react'
-import Blog from '@/components/blog/Blog'
 import { Metadata } from 'next'
-
-
+import { getAllBlogPosts } from '@/lib/blogs'
+import Blog from '@/components/blog/Blog'
 
 export const metadata: Metadata = {
   title: 'Blog | Chennai Web Solutions',
@@ -12,9 +10,14 @@ export const metadata: Metadata = {
   }
 }
 
-
 export default function BlogPage() {
-  return (
-    <Blog/>
-  )
+  const posts = getAllBlogPosts()
+  return <Blog posts={posts} />
+}
+
+export async function generateStaticParams() {
+  const posts = getAllBlogPosts()
+  return posts.map((post) => ({
+    slug: post.slug
+  }))
 }

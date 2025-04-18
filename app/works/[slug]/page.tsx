@@ -1,12 +1,11 @@
-import { client } from "@/sanity/lib/client"
-import { urlFor } from "@/sanity/lib/image"
-import { PortableText, PortableTextComponents } from "@portabletext/react"
-import Image from "next/image"
-import Link from "next/link"
-import { notFound } from "next/navigation"
-import RelatedProjects from "@/components/works/RelatedProjects"
-import { GradientHeading } from "@/components/ui/gradient-heading"
-import { Metadata } from "next"
+import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
+import Markdown from 'markdown-to-jsx'
+import Image from 'next/image'
+import Link from 'next/link'
+import { GradientHeading } from '@/components/ui/gradient-heading'
+import RelatedProjects from '@/components/works/RelatedProjects'
+import { getProjectBySlug, getAllProjects } from '@/lib/projects'
 
 type Props = {
   params: {
@@ -14,71 +13,23 @@ type Props = {
   }
 }
 
-async function getProject(slug: string) {
-  const query = `*[_type == "project" && slug.current == $slug][0]{
-    _id,
-    title,
-    description,
-    heroImage,
-    tags,
-    year,
-    client,
-    services,
-    websiteLink,
-    content,
-    testimonial,
-    "relatedProjects": *[_type == "project" && slug.current != $slug && count(services[@ in ^.services]) > 0][0...3]{
-      title,
-      description,
-      heroImage,
-      slug,
-      services
-    }
-  }`
-
-  const project = await client.fetch(query, { slug })
-  return project
-}
-
-const components: PortableTextComponents = {
-  block: {
-    h1: ({children}) => (
-      <h1 className="text-3xl font-bold font-calendas mt-12 mb-6 text-neutral-900 dark:text-white">{children}</h1>
-    ),
-    h2: ({children}) => (
-      <h2 className="text-2xl font-bold font-calendas mt-10 mb-4 text-neutral-900 dark:text-white">{children}</h2>
-    ),
-    h3: ({children}) => (
-      <h3 className="text-xl font-bold font-calendas mt-8 mb-3 text-neutral-900 dark:text-white">{children}</h3>
-    ),
-    normal: ({children}) => (
-      <p className="mb-6 leading-7 text-neutral-600 dark:text-neutral-400">{children}</p>
-    ),
-  },
-  list: {
-    bullet: ({children}) => (
-      <ul className="mb-6 ml-6 space-y-3 list-disc marker:text-[#4361ee]">{children}</ul>
-    ),
-  },
-  listItem: {
-    bullet: ({children}) => (
-      <li className="text-neutral-600 dark:text-neutral-400 pl-2">{children}</li>
-    ),
-  },
-  marks: {
-    strong: ({children}) => (
-      <strong className="font-semibold text-neutral-900 dark:text-white">{children}</strong>
-    ),
-    em: ({children}) => (
-      <em className="italic">{children}</em>
-    ),
-  },
+type ProjectData = {
+  title: string
+  description: string
+  heroImage: string
+  tags: string[]
+  year: string
+  client: string
+  services: string[]
+  websiteLink?: string
+  testimonial?: string
+  content: string
 }
 
 export default async function ProjectPage({ params }: Props) {
-  // Await params in the page component as well
   const { slug } = await params
-  const project = await getProject(slug)
+  const project = getProjectBySlug(slug) as ProjectData
+  const allProjects = getAllProjects()
   
   if (!project) {
     notFound()
@@ -116,7 +67,7 @@ export default async function ProjectPage({ params }: Props) {
             </div>
             <div className="relative h-[60vh] rounded-2xl overflow-hidden shadow-2xl">
               <Image
-                src={urlFor(project.heroImage).url()}
+                src={project.heroImage}
                 alt={project.title}
                 fill
                 className="object-cover"
@@ -129,13 +80,70 @@ export default async function ProjectPage({ params }: Props) {
           {/* Project Details */}
           <div className="grid md:grid-cols-3 gap-12 mb-16">
             <div className="md:col-span-2">
-              <h2 className="text-2xl font-bold mb-8 font-calendas text-neutral-900 dark:text-white">About the Project</h2>
-              <div className="space-y-4">
-                <PortableText 
-                  value={project.content} 
-                  components={components}
-                />
-              </div>
+              <Markdown
+                options={{
+                  overrides: {
+                    h1: {
+                      component: ({ children }) => (
+                        <h1 className="text-3xl font-bold font-calendas mt-12 mb-6 text-neutral-900 dark:text-white">
+                          {children}
+                        </h1>
+                      )
+                    },
+                    h2: {
+                      component: ({ children }) => (
+                        <h2 className="text-2xl font-bold font-calendas mt-10 mb-4 text-neutral-900 dark:text-white">
+                          {children}
+                        </h2>
+                      )
+                    },
+                    h3: {
+                      component: ({ children }) => (
+                        <h3 className="text-xl font-bold font-calendas mt-8 mb-3 text-neutral-900 dark:text-white">
+                          {children}
+                        </h3>
+                      )
+                    },
+                    p: {
+                      component: ({ children }) => (
+                        <p className="mb-6 leading-7 text-neutral-600 dark:text-neutral-400">
+                          {children}
+                        </p>
+                      )
+                    },
+                    ul: {
+                      component: ({ children }) => (
+                        <ul className="mb-6 ml-6 space-y-3 list-disc marker:text-[#4361ee]">
+                          {children}
+                        </ul>
+                      )
+                    },
+                    li: {
+                      component: ({ children }) => (
+                        <li className="text-neutral-600 dark:text-neutral-400 pl-2">
+                          {children}
+                        </li>
+                      )
+                    },
+                    strong: {
+                      component: ({ children }) => (
+                        <strong className="font-semibold text-neutral-900 dark:text-white">
+                          {children}
+                        </strong>
+                      )
+                    },
+                    em: {
+                      component: ({ children }) => (
+                        <em className="italic">
+                          {children}
+                        </em>
+                      )
+                    }
+                  }
+                }}
+              >
+                {project.content}
+              </Markdown>
             </div>
             
             <div className="space-y-8 bg-white dark:bg-zinc-900 p-8 rounded-2xl shadow-lg h-fit">
@@ -208,9 +216,11 @@ export default async function ProjectPage({ params }: Props) {
           )}
 
           {/* Related Projects Section */}
-          {project.relatedProjects && project.relatedProjects.length > 0 && (
-            <RelatedProjects projects={project.relatedProjects} />
-          )}
+          <RelatedProjects 
+            currentSlug={slug}
+            currentServices={project.services}
+            allProjects={allProjects}
+          />
         </div>
       </div>
     </article>
@@ -218,9 +228,8 @@ export default async function ProjectPage({ params }: Props) {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  // Await params before destructuring
   const { slug } = await params
-  const project = await getProject(slug)
+  const project = getProjectBySlug(slug) as ProjectData
 
   if (!project) {
     return {

@@ -28,6 +28,12 @@ const allLogos = [
     id: 4, 
     img: "https://res.cloudinary.com/dryhpaq1t/image/upload/v1742050566/veitech_wnybxf.png" 
   },
+  { 
+    name: "Harimidhu Organic", 
+    id: 5,
+    img: "https://res.cloudinary.com/dyj3rywju/image/upload/v1744989453/harimidhu_logo_vxgcur.png" 
+  },
+
 ];
 
 // Double the logos array for seamless infinite scroll

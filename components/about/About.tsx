@@ -7,40 +7,11 @@ import { CheckCircle2, Users, Trophy, Lightbulb, Users2, Shield, Clock } from 'l
 import Link from 'next/link';
 import { GradientHeading } from "@/components/ui/gradient-heading"
 import { useState, useRef, useEffect } from 'react';
+import { TeamMember } from '@/lib/about';
 
-const teamMembers = [
-  { 
-    name: "Balaji D", 
-    role: "Founder", 
-    image: "https://res.cloudinary.com/dryhpaq1t/image/upload/v1741943851/balajid_bmu3km.jpg",
-    slug: "balaji-d"
-  },
-  { 
-    name: "Santhosh D", 
-    role: "Web & AI Specialist", 
-    image: "https://res.cloudinary.com/dryhpaq1t/image/upload/v1741963174/Santhosh_D_rz3vr0.jpg",
-    slug: "santhosh-d"
-  },  
-  { 
-    name: "Deepan B", 
-    role: "AI Consultant", 
-    image: "https://res.cloudinary.com/dryhpaq1t/image/upload/v1741943850/deepanb_wyj4j2.jpg",
-    slug: "deepan-b"
-  },
-  { 
-    name: "Joshua Vince", 
-    role: "Creative Designer", 
-    image: "https://res.cloudinary.com/dryhpaq1t/image/upload/v1741943851/joshuavince_mjoivc.jpg",
-    slug: "joshua-vince"
-  },
-  { 
-    name: "Yogeshwaran B", 
-    role: "Social Media Strategist", 
-    image: "https://res.cloudinary.com/dryhpaq1t/image/upload/v1741962791/yogeshwaranhd.jpeg_loh6ua.jpg",
-    slug: "yogeshwaran-b"
-  },
- 
-];
+type Props = {
+  teamMembers: TeamMember[]
+}
 
 const useCounter = (end: number, duration: number = 2000) => {
   const [count, setCount] = useState(0)
@@ -128,7 +99,7 @@ function StatItem({ stat, index }: { stat: typeof stats[0], index: number }) {
   )
 }
 
-export default function About() {
+export default function About({ teamMembers }: Props) {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}

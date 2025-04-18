@@ -4,6 +4,10 @@
 
 ## Pages need to worked
 
-> contact page need to be connected
+> need to update social media links
+
+> need to add whatsapp popup
+
+> need to add ai chatbot
 
 

@@ -3,31 +3,24 @@
 import { motion } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
-import { urlFor } from "@/sanity/lib/image"
-
-type SanityImage = {
-  _type: "image";
-  asset: {
-    _ref: string;
-    _type: "reference";
-  };
-}
-
-type RelatedProject = {
-  title: string;
-  description: string;
-  heroImage: SanityImage;
-  slug: {
-    current: string;
-  };
-  services: string[];
-}
+import { Project } from "@/lib/projects"
 
 type Props = {
-  projects: RelatedProject[]
+  currentSlug: string
+  currentServices: string[]
+  allProjects: Project[]
 }
 
-export default function RelatedProjects({ projects }: Props) {
+export default function RelatedProjects({ currentSlug, currentServices, allProjects }: Props) {
+  const relatedProjects = allProjects
+    .filter(project => 
+      project.slug !== currentSlug && 
+      project.services.some(service => currentServices.includes(service))
+    )
+    .slice(0, 3)
+
+  if (relatedProjects.length === 0) return null
+
   return (
     <div className="pt-8 border-t border-neutral-200 dark:border-neutral-800">
       <div className="text-center mb-12">
@@ -38,10 +31,10 @@ export default function RelatedProjects({ projects }: Props) {
       </div>
       
       <div className="grid md:grid-cols-3 gap-8">
-        {projects.map((project, index) => (
+        {relatedProjects.map((project, index) => (
           <Link 
-            key={project.slug.current} 
-            href={`/works/${project.slug.current}`}
+            key={project.slug} 
+            href={`/works/${project.slug}`}
           >
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -52,7 +45,7 @@ export default function RelatedProjects({ projects }: Props) {
             >
               <div className="relative h-48 overflow-hidden">
                 <Image
-                  src={urlFor(project.heroImage).url()}
+                  src={project.heroImage}
                   alt={project.title}
                   fill
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
