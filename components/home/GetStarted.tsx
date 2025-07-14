@@ -38,28 +38,7 @@ const features = [
   }
 ]
 
-const steps = [
-  {
-    number: "01",
-    title: "Discovery",
-    description: "We start by understanding your business goals and requirements"
-  },
-  {
-    number: "02",
-    title: "Planning",
-    description: "Our team creates a detailed roadmap for your project"
-  },
-  {
-    number: "03",
-    title: "Development",
-    description: "We build your solution using the latest technologies"
-  },
-  {
-    number: "04",
-    title: "Launch",
-    description: "Your project goes live with our full support"
-  }
-]
+
 
 export default function GetStarted() {
   return (
@@ -98,37 +77,7 @@ export default function GetStarted() {
           ))}
         </div>
 
-        {/* Process Steps */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.5 }}
-          className="mb-16"
-        >
-          <h2 className="text-3xl font-bold text-center mb-12">Our Process</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            {steps.map((step, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="relative"
-              >
-                <div className="bg-[#4361ee]/10 dark:bg-[#4361ee]/20 rounded-full w-16 h-16 flex items-center justify-center mb-4 mx-auto">
-                  <span className="text-[#4361ee] font-bold text-xl">{step.number}</span>
-                </div>
-                {index < steps.length - 1 && (
-                  <div className="hidden md:block absolute top-8 left-[60%] w-[80%] h-[2px] bg-gradient-to-r from-[#4361ee]/50 to-transparent" />
-                )}
-                <h3 className="text-xl font-bold text-center mb-2">{step.title}</h3>
-                <p className="text-neutral-600 dark:text-neutral-400 text-center">{step.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
+       
 
         {/* CTA */}
         <motion.div

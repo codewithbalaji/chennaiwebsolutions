@@ -1,4 +1,4 @@
-import { LandingHero } from '@/components/home/LandingHero'
+import LandingHero from '@/components/home/LandingHero'
 import { About } from '@/components/home/About'
 import { Services } from '@/components/home/Services'
 import { Clients } from '@/components/home/Clients'

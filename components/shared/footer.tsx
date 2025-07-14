@@ -107,8 +107,8 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/careers" className="text-sm hover:text-[#4361ee] dark:hover:text-[#4361ee] transition-colors">
-                    Careers
+                  <Link href="/services" className="text-sm hover:text-[#4361ee] dark:hover:text-[#4361ee] transition-colors">
+                    Services
                   </Link>
                 </li>
               </ul>

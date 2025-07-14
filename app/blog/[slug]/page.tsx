@@ -55,7 +55,7 @@ export default async function BlogPostPage({ params }: Props) {
           
           {/* Title */}
           <div className="text-center mb-8">
-            <GradientHeading variant="default" size="xxl" weight="bold" className="mb-6">
+            <GradientHeading variant="default" size="xl" weight="bold" className="mb-6">
               {post.title}
             </GradientHeading>
             
