@@ -13,11 +13,11 @@ export default function Preheader() {
     <div className="w-full py-2 px-4 md:px-6 border-b border-gray-200 dark:border-gray-700">
       <div className="flex flex-row justify-between md:justify-end items-center gap-2 md:gap-6 text-xs md:text-sm">
         <a 
-          href="mailto:info.chennaiwebsolutions@gmail.com"
+          href="mailto:sales.chennaiwebsolutions.com"
           className="flex items-center gap-1 md:gap-2 text-black dark:text-white transition-colors"
         >
           <Mail className="h-3 w-3 md:h-4 md:w-4" />
-          <span className='text-blue-600 dark:text-blue-600 hover:text-blue-700 dark:hover:text-blue-500'>info.chennaiwebsolutions@gmail.com</span>
+          <span className='text-blue-600 dark:text-blue-600 hover:text-blue-700 dark:hover:text-blue-500'>sales.chennaiwebsolutions.com</span>
         </a>
         <a 
           href="tel:+919384318546" 

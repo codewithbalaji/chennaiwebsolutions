@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { Menu as MenuIcon, X } from "lucide-react";
 import Link from "next/link";
-import logoDark from "@/public/Chennai Web Solutions Logo Type - Color.png";
+import logoDark from "@/public/logo.png";
 import useInvalidPaths from "@/lib/use-invalid-paths";
 import { motion, AnimatePresence } from "framer-motion";
 

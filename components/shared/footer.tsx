@@ -80,13 +80,13 @@ export default function Footer() {
               </Link>
 
               <Link 
-                href="mailto:info.chennaiwebsolutions@gmail.com"
+                href="mailto:sales.chennaiwebsolutions.com"
                 className="flex items-center space-x-3 text-gray-600 dark:text-gray-300 hover:text-[#4361ee] dark:hover:text-[#4361ee] transition-colors group"
               >
                 <div className="w-8 h-8 bg-[#4361ee]/10 rounded-full flex-shrink-0 flex items-center justify-center">
                   <MdEmail className="w-4 h-4 text-[#4361ee]" />
                 </div>
-                <span className="text-sm break-all group-hover:text-[#4361ee]">info.chennaiwebsolutions@gmail.com</span>
+                <span className="text-sm break-all group-hover:text-[#4361ee]">sales.chennaiwebsolutions.com</span>
               </Link>
             </div>
           </div>
