@@ -254,7 +254,7 @@ export default function About({ teamMembers }: Props) {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
             {teamMembers.map((member, index) => (
               <Link href={`/about/${member.slug}`} key={index}>
                 <motion.div
@@ -266,12 +266,13 @@ export default function About({ teamMembers }: Props) {
                   className="group relative cursor-pointer"
                 >
                   <div className="bg-white dark:bg-[#002340] rounded-2xl overflow-hidden shadow-lg transition-all duration-300 group-hover:shadow-2xl">
-                    <div className="relative h-64 w-full overflow-hidden">
+                    <div className="relative h-96 w-full overflow-hidden">
                       <Image
                         src={member.image}
                         alt={member.name}
                         fill 
-                        className="transition-transform duration-300 group-hover:scale-105"
+                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>
